@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/PlayerControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/InputActions/PlayerControls.inputactions'
 
 using System;
 using System.Collections;
@@ -28,7 +28,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Move"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""21d22144-8882-46a9-ab99-5a9180a4e130"",
                     ""expectedControlType"": ""Stick"",
                     ""processors"": """",

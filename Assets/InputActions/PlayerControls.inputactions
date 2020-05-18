@@ -15,7 +15,7 @@
                 },
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "21d22144-8882-46a9-ab99-5a9180a4e130",
                     "expectedControlType": "Stick",
                     "processors": "",
