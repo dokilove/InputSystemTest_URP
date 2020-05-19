@@ -308,8 +308,8 @@ GameObject:
   - component: {fileID: 1811794236}
   - component: {fileID: 1811794235}
   - component: {fileID: 1811794234}
-  m_Layer: 0
-  m_Name: Plane
+  m_Layer: 8
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -397,116 +397,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: moveAction.m_SingletonActionBindings.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Bindings.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: moveAction.m_Id
-      value: 7d7d1186-a263-4c06-96a2-1918ecd058bc
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: moveAction.m_Name
-      value: Move
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: moveAction.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 5c278345-833b-4a7e-a33e-5cb7b1eda50e
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: moveAction.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Move
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: moveAction.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Gamepad>/leftStick
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Id
-      value: 5153f1c1-f8b4-4d76-8896-30d227d8732f
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Name
-      value: Gameplay Actions
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.data[0].m_Name
-      value: New action
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.data[0].m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.data[0].m_ExpectedControlType
-      value: Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.data[0].m_Id
-      value: f52b57a0-321a-4efa-b0be-76a1011f5e46
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Bindings.Array.data[0].m_Id
-      value: e61d0a0e-fd39-4499-ac48-9dd0ebbb375e
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Bindings.Array.data[0].m_Action
-      value: New action
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.data[1].m_Name
-      value: New action1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.data[1].m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.data[1].m_ExpectedControlType
-      value: Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Actions.Array.data[1].m_Id
-      value: bc9223b6-fec6-431d-a655-e507e211c0c4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Bindings.Array.data[1].m_Id
-      value: 5964ad94-f4ff-4eac-ac69-629e0f5f8015
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564197415993168789, guid: 389ee9bde3eb1624aad091619def04a6,
-        type: 3}
-      propertyPath: gameplayActions.m_Bindings.Array.data[1].m_Action
-      value: New action1
-      objectReference: {fileID: 0}
     - target: {fileID: 4034617393969052048, guid: 389ee9bde3eb1624aad091619def04a6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -515,7 +405,7 @@ PrefabInstance:
     - target: {fileID: 4034617393969052048, guid: 389ee9bde3eb1624aad091619def04a6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2
+      value: 0.232
       objectReference: {fileID: 0}
     - target: {fileID: 4034617393969052048, guid: 389ee9bde3eb1624aad091619def04a6,
         type: 3}

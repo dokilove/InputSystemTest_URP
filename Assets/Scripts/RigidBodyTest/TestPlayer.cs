@@ -11,13 +11,18 @@ public class TestPlayer : MonoBehaviour, PlayerControls.IGamePlayActions
     PlayerControls controls;
 
     Rigidbody rigidBody;
+    Vector3 rbVelocity = Vector3.zero;
+    float downAccel = 5.0f;
 
     bool isJumped;
     Vector2 direction;
 
+    GroundChecker groundChecker;
+
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
+        groundChecker = GetComponentInChildren<GroundChecker>();
     }
 
     private void OnEnable()
@@ -37,11 +42,24 @@ public class TestPlayer : MonoBehaviour, PlayerControls.IGamePlayActions
 
     private void FixedUpdate()
     {
-        rigidBody.MovePosition(this.transform.position + new Vector3(direction.x, 0.0f, direction.y) * 10.0f * Time.deltaTime);
-        if (isJumped)
+        rbVelocity = new Vector3(direction.x, 0.0f, direction.y) * 10.0f;
+        if (isJumped)// && groundChecker.isGrounded)
         {
-            rigidBody.AddForce(Vector3.up, ForceMode.Impulse);
+            //rigidBody.AddForce(Vector3.up * 25.0f, ForceMode.Impulse);
+            rbVelocity.y = 10.0f;
         }
+        else if (!isJumped && groundChecker.isGrounded)
+        {
+            rbVelocity.y = 0.0f;
+        }
+        else
+        {
+            rbVelocity.y -= downAccel;
+        }
+
+        Debug.Log(groundChecker.isGrounded);
+
+        rigidBody.velocity = rbVelocity;
     }
 
     public void OnGrow(InputAction.CallbackContext context)
