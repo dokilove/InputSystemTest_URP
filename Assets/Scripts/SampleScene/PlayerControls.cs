@@ -49,6 +49,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ResetCam"",
+                    ""type"": ""Button"",
+                    ""id"": ""0f355728-517b-43b3-af09-6c599f1efa51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -95,6 +103,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""RotateY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0fe2b6ea-a2ec-4e34-90bf-3d190d407d42"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ResetCam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -107,6 +126,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_GamePlay_Move = m_GamePlay.FindAction("Move", throwIfNotFound: true);
         m_GamePlay_Rotate = m_GamePlay.FindAction("Rotate", throwIfNotFound: true);
         m_GamePlay_RotateY = m_GamePlay.FindAction("RotateY", throwIfNotFound: true);
+        m_GamePlay_ResetCam = m_GamePlay.FindAction("ResetCam", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -160,6 +180,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_GamePlay_Move;
     private readonly InputAction m_GamePlay_Rotate;
     private readonly InputAction m_GamePlay_RotateY;
+    private readonly InputAction m_GamePlay_ResetCam;
     public struct GamePlayActions
     {
         private @PlayerControls m_Wrapper;
@@ -168,6 +189,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_GamePlay_Move;
         public InputAction @Rotate => m_Wrapper.m_GamePlay_Rotate;
         public InputAction @RotateY => m_Wrapper.m_GamePlay_RotateY;
+        public InputAction @ResetCam => m_Wrapper.m_GamePlay_ResetCam;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -189,6 +211,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @RotateY.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateY;
                 @RotateY.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateY;
                 @RotateY.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateY;
+                @ResetCam.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnResetCam;
+                @ResetCam.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnResetCam;
+                @ResetCam.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnResetCam;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
@@ -205,6 +230,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @RotateY.started += instance.OnRotateY;
                 @RotateY.performed += instance.OnRotateY;
                 @RotateY.canceled += instance.OnRotateY;
+                @ResetCam.started += instance.OnResetCam;
+                @ResetCam.performed += instance.OnResetCam;
+                @ResetCam.canceled += instance.OnResetCam;
             }
         }
     }
@@ -215,5 +243,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
         void OnRotateY(InputAction.CallbackContext context);
+        void OnResetCam(InputAction.CallbackContext context);
     }
 }

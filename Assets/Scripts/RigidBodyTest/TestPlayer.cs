@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TestPlayer : MonoBehaviour, PlayerControls.IGamePlayActions
+public class TestPlayer : MonoBehaviour
 {
-    public InputAction moveAction;
-    public InputActionMap gameplayActions;
-
-    PlayerControls controls;
+    //public InputAction moveAction;
+    //public InputActionMap gameplayActions;
+    public InputController inputController;
 
     Rigidbody rigidBody;
     Vector3 rbVelocity = Vector3.zero;
-    float downAccel = 5.0f;
+    public float moveVelocity = 10.0f;
+    public float jumpVelocity = 10.0f;
+    public float downAccel = 5.0f;
 
-    bool isJumped;
-    Vector2 direction;
 
     GroundChecker groundChecker;
 
@@ -25,30 +24,15 @@ public class TestPlayer : MonoBehaviour, PlayerControls.IGamePlayActions
         groundChecker = GetComponentInChildren<GroundChecker>();
     }
 
-    private void OnEnable()
-    {
-        if (controls == null)
-        {
-            controls = new PlayerControls();
-            controls.GamePlay.SetCallbacks(this);
-        }
-        controls.GamePlay.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.GamePlay.Disable();
-    }
-
     private void FixedUpdate()
     {
-        rbVelocity = new Vector3(direction.x, 0.0f, direction.y) * 10.0f;
-        if (isJumped)// && groundChecker.isGrounded)
+        rbVelocity = new Vector3(inputController.direction.x, 0.0f, inputController.direction.y) * moveVelocity;
+        if (inputController.isJumped)// && groundChecker.isGrounded)
         {
-            //rigidBody.AddForce(Vector3.up * 25.0f, ForceMode.Impulse);
-            rbVelocity.y = 10.0f;
+            //rigidBody.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
+            rbVelocity.y = jumpVelocity;
         }
-        else if (!isJumped && groundChecker.isGrounded)
+        else if (!inputController.isJumped && groundChecker.isGrounded)
         {
             rbVelocity.y = 0.0f;
         }
@@ -57,26 +41,8 @@ public class TestPlayer : MonoBehaviour, PlayerControls.IGamePlayActions
             rbVelocity.y -= downAccel;
         }
 
-        Debug.Log(groundChecker.isGrounded);
+        //Debug.Log(groundChecker.isGrounded);
 
         rigidBody.velocity = rbVelocity;
-    }
-
-    public void OnGrow(InputAction.CallbackContext context)
-    {
-        isJumped = context.ReadValue<float>() > 0.0f;        
-    }
-    
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        direction = context.ReadValue<Vector2>();
-    }
-
-    public void OnRotate(InputAction.CallbackContext context)
-    {
-    }
-
-    public void OnRotateY(InputAction.CallbackContext context)
-    {
     }
 }
