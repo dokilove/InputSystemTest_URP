@@ -15,24 +15,35 @@ public class TestPlayer : MonoBehaviour
     public float jumpVelocity = 10.0f;
     public float downAccel = 5.0f;
 
+    public float turnSmoothTime = 0.1f;
 
-    GroundChecker groundChecker;
-
+    float distanceToGround;
+    
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
-        groundChecker = GetComponentInChildren<GroundChecker>();
     }
+
+    float turnSmoothVelocity;
 
     private void FixedUpdate()
     {
+
         rbVelocity = new Vector3(inputController.direction.x, 0.0f, inputController.direction.y) * moveVelocity;
-        if (inputController.isJumped)// && groundChecker.isGrounded)
+
+        Vector2 direction = inputController.direction.normalized;
+        
+        float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(direction.x, direction.y);
+        float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+
+        rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
+
+        if (inputController.isJumped && Grounded())
         {
             //rigidBody.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
             rbVelocity.y = jumpVelocity;
         }
-        else if (!inputController.isJumped && groundChecker.isGrounded)
+        else if (!inputController.isJumped && Grounded())
         {
             rbVelocity.y = 0.0f;
         }
@@ -41,8 +52,13 @@ public class TestPlayer : MonoBehaviour
             rbVelocity.y -= downAccel;
         }
 
-        //Debug.Log(groundChecker.isGrounded);
-
         rigidBody.velocity = rbVelocity;
+    }
+
+    bool Grounded()
+    {
+        distanceToGround = downAccel * 0.04f;
+        Debug.DrawRay(transform.position + Vector3.up * distanceToGround * 0.5f, Vector3.down * distanceToGround, Color.green);
+        return Physics.Raycast(transform.position + Vector3.up * distanceToGround * 0.5f, Vector3.down, distanceToGround, 1 << 8);
     }
 }
