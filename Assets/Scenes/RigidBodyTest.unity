@@ -231,7 +231,7 @@ MonoBehaviour:
   camOffset: {x: 0, y: 0.75, z: 0}
   camRotX: -20
   camRotY: -180
-  camDistance: 4
+  camDistance: 8
 --- !u!1 &1125288826
 GameObject:
   m_ObjectHideFlags: 0

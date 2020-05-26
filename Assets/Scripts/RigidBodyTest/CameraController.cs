@@ -21,7 +21,11 @@ public class CameraController : MonoBehaviour
     Vector3 destination = Vector3.zero;
     Vector3 camVel = Vector3.zero;
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        mainTarget.GetComponent<TestPlayer>().SetCameraTransform(this.transform);
+    }
+
     void Start()
     {
         MoveToTarget();
@@ -37,7 +41,7 @@ public class CameraController : MonoBehaviour
     void MoveToTarget()
     {
         targetPos = mainTarget.position + camOffset;
-        destination = Quaternion.Euler(camRotX, camRotY + mainTarget.eulerAngles.y, 0.0f) // lookat rotation
+        destination = Quaternion.Euler(camRotX, camRotY, 0.0f) // lookat rotation
             * Vector3.forward * camDistance;
         destination += targetPos;
 

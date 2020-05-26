@@ -5,8 +5,6 @@ using UnityEngine.InputSystem;
 
 public class TestPlayer : MonoBehaviour
 {
-    //public InputAction moveAction;
-    //public InputActionMap gameplayActions;
     public InputController inputController;
 
     Rigidbody rigidBody;
@@ -18,7 +16,8 @@ public class TestPlayer : MonoBehaviour
     public float turnSmoothTime = 0.1f;
 
     float distanceToGround;
-    
+    Transform cameraTransform;
+
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -29,14 +28,26 @@ public class TestPlayer : MonoBehaviour
     private void FixedUpdate()
     {
 
-        rbVelocity = new Vector3(inputController.direction.x, 0.0f, inputController.direction.y) * moveVelocity;
+        Vector3 forward = (this.transform.position - cameraTransform.position);
+        forward.y = 0.0f;
+        forward = forward.normalized;
 
-        Vector2 direction = inputController.direction.normalized;
-        
-        float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(direction.x, direction.y);
-        float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        Vector3 right = new Vector3(forward.z, 0.0f, -forward.x);
+        //Vector3 right = Vector3.Cross(Vector3.up, forward);
+               
+        rbVelocity = (forward * inputController.direction.y + right * inputController.direction.x).normalized;
+        //rbVelocity = new Vector3(inputController.direction.x, 0.0f, inputController.direction.y) * moveVelocity;
 
-        rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
+        Vector2 direction = new Vector2(rbVelocity.z, rbVelocity.x).normalized;
+        rbVelocity *= moveVelocity;
+
+        if (direction.sqrMagnitude > 0.0f)
+        {
+            float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(direction.x, direction.y);
+            float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+
+            rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
+        }
 
         if (inputController.isJumped && Grounded())
         {
@@ -60,5 +71,10 @@ public class TestPlayer : MonoBehaviour
         distanceToGround = downAccel * 0.04f;
         Debug.DrawRay(transform.position + Vector3.up * distanceToGround * 0.5f, Vector3.down * distanceToGround, Color.green);
         return Physics.Raycast(transform.position + Vector3.up * distanceToGround * 0.5f, Vector3.down, distanceToGround, 1 << 8);
+    }
+
+    public void SetCameraTransform(Transform camera)
+    {
+        cameraTransform = camera;
     }
 }
