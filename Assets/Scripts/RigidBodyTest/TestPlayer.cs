@@ -18,27 +18,23 @@ public class TestPlayer : MonoBehaviour
     float distanceToGround;
     Transform cameraTransform;
 
+    CameraController cameraController;
+
+    float turnSmoothVelocity;
+
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    float turnSmoothVelocity;
 
     private void FixedUpdate()
     {
-
-        Vector3 forward = (this.transform.position - cameraTransform.position);
-        forward.y = 0.0f;
-        forward = forward.normalized;
-
-        Vector3 right = new Vector3(forward.z, 0.0f, -forward.x);
-        //Vector3 right = Vector3.Cross(Vector3.up, forward);
                
-        rbVelocity = (forward * inputController.direction.y + right * inputController.direction.x).normalized;
+        rbVelocity = (cameraController.cameraForward * inputController.direction.y + cameraController.cameraRight * inputController.direction.x).normalized;
         //rbVelocity = new Vector3(inputController.direction.x, 0.0f, inputController.direction.y) * moveVelocity;
 
-        Vector2 direction = new Vector2(rbVelocity.z, rbVelocity.x).normalized;
+        Vector2 direction = new Vector2(rbVelocity.x, rbVelocity.z).normalized;
         rbVelocity *= moveVelocity;
 
         if (direction.sqrMagnitude > 0.0f)
@@ -73,8 +69,8 @@ public class TestPlayer : MonoBehaviour
         return Physics.Raycast(transform.position + Vector3.up * distanceToGround * 0.5f, Vector3.down, distanceToGround, 1 << 8);
     }
 
-    public void SetCameraTransform(Transform camera)
+    public void SetCameraController(CameraController controller)
     {
-        cameraTransform = camera;
+        cameraController = controller;
     }
 }

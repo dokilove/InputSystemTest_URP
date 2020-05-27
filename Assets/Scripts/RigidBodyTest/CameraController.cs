@@ -17,13 +17,17 @@ public class CameraController : MonoBehaviour
     public float camRotY = -180.0f;
     public float camDistance = 4.0f;
 
+    public Vector3 cameraForward;
+    public Vector3 cameraRight;
+
     Vector3 targetPos = Vector3.zero;
     Vector3 destination = Vector3.zero;
     Vector3 camVel = Vector3.zero;
 
+
     private void Awake()
     {
-        mainTarget.GetComponent<TestPlayer>().SetCameraTransform(this.transform);
+        mainTarget.GetComponent<TestPlayer>().SetCameraController(this);
     }
 
     void Start()
@@ -33,6 +37,14 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        cameraForward = (mainTarget.position - this.transform.position);
+        cameraForward.y = 0.0f;
+        cameraForward = cameraForward.normalized;
+
+        cameraRight = new Vector3(cameraForward.z, 0.0f, -cameraForward.x);
+        //cameraRight = Vector3.Cross(Vector3.up, forward);
+
         MoveToTarget();
         LookAtTarget();
         OrbitTarget();
@@ -66,7 +78,7 @@ public class CameraController : MonoBehaviour
         if (inputController.resetCam)
         {
             camRotX = -20.0f;
-            camRotY = -180.0f;
+            camRotY = -180.0f + mainTarget.eulerAngles.y;
         }
 
         camRotX += -inputController.rotate.y;
