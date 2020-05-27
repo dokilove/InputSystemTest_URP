@@ -47,7 +47,6 @@ public class TestPlayer : MonoBehaviour
 
         if (inputController.isJumped && Grounded())
         {
-            //rigidBody.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
             rbVelocity.y = jumpVelocity;
         }
         else if (!inputController.isJumped && Grounded())
