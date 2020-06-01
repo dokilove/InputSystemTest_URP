@@ -15,15 +15,18 @@ public class CameraController : MonoBehaviour
     public Vector3 camOffset = new Vector3(0.0f, 0.75f, 0.0f);
     public float camRotX = -20.0f;
     public float camRotY = -180.0f;
-    public float camDistance = 4.0f;
+    public float camDistance = 8.0f;
 
     public Vector3 cameraForward;
     public Vector3 cameraRight;
 
+    public CollisionHandler collision = new CollisionHandler();
+
     Vector3 targetPos = Vector3.zero;
     Vector3 destination = Vector3.zero;
-    Vector3 camVel = Vector3.zero;
-
+    float adjustedDistance = 8.0f;
+    Vector3 adjustedDestination = Vector3.zero;
+    Vector3 camVel = Vector3.zero;   
 
     private void Awake()
     {
@@ -33,6 +36,10 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         MoveToTarget();
+
+        collision.Initialize(Camera.main);
+        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
+        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
     }
 
     private void FixedUpdate()
@@ -48,6 +55,18 @@ public class CameraController : MonoBehaviour
         MoveToTarget();
         LookAtTarget();
         OrbitTarget();
+
+        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
+        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
+
+        for (int i= 0; i < 5;++i)
+        {
+            Debug.DrawLine(targetPos, collision.desiredCameraClipPoints[i], Color.white);
+            Debug.DrawLine(targetPos, collision.adjustedCameraClipPoints[i], Color.green);
+        }
+
+        collision.CheckColliding(targetPos);
+        adjustedDistance = collision.GetAdjustedDistanceWithRayFrom(targetPos);
     }
 
     void MoveToTarget()
@@ -57,13 +76,30 @@ public class CameraController : MonoBehaviour
             * Vector3.forward * camDistance;
         destination += targetPos;
 
-        if (smoothFollow)
+        if (collision.colliding)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, destination, ref camVel, smooth);
+            adjustedDestination = Quaternion.Euler(camRotX, camRotY, 0.0f) * Vector3.forward * adjustedDistance;
+            adjustedDestination += targetPos;
+
+            if (smoothFollow)
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, adjustedDestination, ref camVel, smooth);
+            }
+            else
+            {
+                transform.position = adjustedDestination;
+            }
         }
         else
         {
-            transform.position = destination;
+            if (smoothFollow)
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, destination, ref camVel, smooth);
+            }
+            else
+            {
+                transform.position = destination;
+            }
         }
     }
 

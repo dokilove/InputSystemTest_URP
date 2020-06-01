@@ -364,6 +364,14 @@ MonoBehaviour:
   camDistance: 8
   cameraForward: {x: 0, y: 0, z: 0}
   cameraRight: {x: 0, y: 0, z: 0}
+  collision:
+    collisionLayer:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    colliding: 0
+    adjustedCameraClipPoints: []
+    desiredCameraClipPoints: []
+    collisionSpace: 2
 --- !u!1 &1083566664
 GameObject:
   m_ObjectHideFlags: 0
