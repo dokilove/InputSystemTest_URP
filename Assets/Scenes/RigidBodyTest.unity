@@ -158,7 +158,7 @@ Transform:
   m_LocalScale: {x: 5, y: 3, z: 5}
   m_Children: []
   m_Father: {fileID: 633412205}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &366281839
 BoxCollider:
@@ -248,12 +248,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1811794237}
-  - {fileID: 1295144245}
-  - {fileID: 1635082911}
   - {fileID: 1133636639}
   - {fileID: 366281838}
   - {fileID: 1083566665}
   - {fileID: 1555103378}
+  - {fileID: 1960957419}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -367,7 +366,7 @@ MonoBehaviour:
   collision:
     collisionLayer:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 512
     colliding: 0
     adjustedCameraClipPoints: []
     desiredCameraClipPoints: []
@@ -403,7 +402,7 @@ Transform:
   m_LocalScale: {x: 5, y: 3, z: 8}
   m_Children: []
   m_Father: {fileID: 633412205}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -22.353, y: 0, z: 0}
 --- !u!65 &1083566666
 BoxCollider:
@@ -588,7 +587,7 @@ Transform:
   m_LocalScale: {x: 5, y: 3, z: 5}
   m_Children: []
   m_Father: {fileID: 633412205}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1133636640
 BoxCollider:
@@ -662,7 +661,7 @@ GameObject:
   - component: {fileID: 1295144248}
   - component: {fileID: 1295144247}
   - component: {fileID: 1295144246}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -676,12 +675,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1295144244}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -18.8, y: 5, z: 28.9}
   m_LocalScale: {x: 5, y: 10, z: 5}
   m_Children: []
-  m_Father: {fileID: 633412205}
-  m_RootOrder: 1
+  m_Father: {fileID: 1960957419}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1295144246
 BoxCollider:
@@ -774,7 +773,7 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 633412205}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1555103379
 BoxCollider:
@@ -895,7 +894,7 @@ GameObject:
   - component: {fileID: 1635082914}
   - component: {fileID: 1635082913}
   - component: {fileID: 1635082912}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -909,12 +908,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1635082910}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 9.200001, y: 5, z: 25.300003}
   m_LocalScale: {x: 5, y: 10, z: 5}
   m_Children: []
-  m_Father: {fileID: 633412205}
-  m_RootOrder: 2
+  m_Father: {fileID: 1960957419}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1635082912
 BoxCollider:
@@ -1069,6 +1068,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 633412205}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1960957418
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1960957419}
+  m_Layer: 9
+  m_Name: Obstacle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1960957419
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960957418}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1295144245}
+  - {fileID: 1635082911}
+  m_Father: {fileID: 633412205}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4034617394943388687
 PrefabInstance:
