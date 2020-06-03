@@ -15,6 +15,8 @@ public class TestPlayer : MonoBehaviour
 
     public float turnSmoothTime = 0.1f;
 
+    public float groundHeight;
+
     float distanceToGround;
     Transform cameraTransform;
 
@@ -26,8 +28,7 @@ public class TestPlayer : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
     }
-
-
+    
     private void FixedUpdate()
     {
                
@@ -47,7 +48,8 @@ public class TestPlayer : MonoBehaviour
 
         if (inputController.isJumped && Grounded())
         {
-            rbVelocity.y = jumpVelocity;
+            rigidBody.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
+            //rbVelocity.y = jumpVelocity;
         }
         else if (!inputController.isJumped && Grounded())
         {
@@ -58,14 +60,32 @@ public class TestPlayer : MonoBehaviour
             rbVelocity.y -= downAccel;
         }
 
+        //if (Grounded())
+        //{
+        //    rbVelocity.y = 0.0f;
+        //}
+        //else
+        //{
+        //    rbVelocity.y -= downAccel;
+        //}
+
+        //if (inputController.isJumped)
+        //{
+        //    rbVelocity.y += jumpVelocity;        
+        //}
+
         rigidBody.velocity = rbVelocity;
+        Debug.Log(rigidBody.velocity.y);
     }
 
     bool Grounded()
     {
         distanceToGround = downAccel * 0.04f;
         Debug.DrawRay(transform.position + Vector3.up * distanceToGround * 0.5f, Vector3.down * distanceToGround, Color.green);
-        return Physics.Raycast(transform.position + Vector3.up * distanceToGround * 0.5f, Vector3.down, distanceToGround, 1 << 8);
+        bool result = Physics.Raycast(transform.position + Vector3.up * distanceToGround * 0.5f, Vector3.down, distanceToGround, 1 << 8 | 1 << 9);
+        if (result)
+            groundHeight = transform.position.y;
+        return result;
     }
 
     public void SetCameraController(CameraController controller)

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform mainTarget;
+    public TestPlayer mainTarget;
     public InputController inputController;
 
     public bool smoothFollow = true;
@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        mainTarget.GetComponent<TestPlayer>().SetCameraController(this);
+        mainTarget.SetCameraController(this);
     }
 
     void Start()
@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour
     private void FixedUpdate()
     {
 
-        cameraForward = (mainTarget.position - this.transform.position);
+        cameraForward = (mainTarget.transform.position - this.transform.position);
         cameraForward.y = 0.0f;
         cameraForward = cameraForward.normalized;
 
@@ -71,7 +71,9 @@ public class CameraController : MonoBehaviour
 
     void MoveToTarget()
     {
-        targetPos = mainTarget.position + camOffset;
+        Vector3 mainTargetPos = mainTarget.transform.position;
+        mainTargetPos.y = mainTarget.groundHeight;
+        targetPos = mainTargetPos + camOffset;
         destination = Quaternion.Euler(camRotX, camRotY, 0.0f) // lookat rotation
             * Vector3.forward * camDistance;
         destination += targetPos;
@@ -114,7 +116,7 @@ public class CameraController : MonoBehaviour
         if (inputController.resetCam)
         {
             camRotX = -20.0f;
-            camRotY = -180.0f + mainTarget.eulerAngles.y;
+            camRotY = -180.0f + mainTarget.transform.eulerAngles.y;
         }
 
         camRotX += -inputController.rotate.y;
