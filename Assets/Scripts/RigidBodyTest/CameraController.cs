@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour
         collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
 
         cameraForward = (mainTarget.transform.position - this.transform.position);
