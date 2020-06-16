@@ -13,6 +13,7 @@ public class InputController : MonoBehaviour, PlayerControls.IGamePlayActions
     public Vector2 rotate = Vector2.zero;
     public bool resetCam = false;
 
+    public bool target = false;
 
     private void OnEnable()
     {
@@ -50,6 +51,11 @@ public class InputController : MonoBehaviour, PlayerControls.IGamePlayActions
 
     public void OnResetCam(InputAction.CallbackContext context)
     {
-        resetCam = context.ReadValue<float>() > 0.0f;
+        resetCam = context.ReadValue<float>() > 0.01f;
+    }
+
+    public void OnTarget(InputAction.CallbackContext context)
+    {
+        target = context.ReadValue<float>() > 0.01f;
     }
 }

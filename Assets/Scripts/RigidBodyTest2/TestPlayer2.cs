@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TestPlayer2 : MonoBehaviour
 {
-    [SerializeField]
-    private InputController inputController;
     [SerializeField]
     private CameraController2 gameCam;
 
@@ -17,6 +16,8 @@ public class TestPlayer2 : MonoBehaviour
     private Rigidbody rigidBody;
     private Vector3 moveDirection;
     float turnSmoothVelocity;
+
+    private Vector2 direction = Vector2.zero;
 
     private void Awake()
     {
@@ -36,12 +37,13 @@ public class TestPlayer2 : MonoBehaviour
         }
 
         rigidBody.velocity = moveDirection * moveVelocity;
+
     }
 
     public void StickToWorldSpace(Transform root, Transform camera, ref Vector3 moveDirectionOut)
     {
         Vector3 rootDirection = root.forward;
-        Vector3 stickDirection = new Vector3(inputController.direction.x, 0.0f, inputController.direction.y);
+        Vector3 stickDirection = new Vector3(direction.x, 0.0f, direction.y);
 
         //speedOut = stickDirection.sqrMagnitude;
 
@@ -51,5 +53,17 @@ public class TestPlayer2 : MonoBehaviour
         Quaternion referentialShift = Quaternion.FromToRotation(Vector3.forward, cameraDirection);
 
         moveDirectionOut = referentialShift * stickDirection;
+    }
+
+    public void OnMovement(InputAction.CallbackContext context)
+    {
+        direction = context.ReadValue<Vector2>();
+    }
+
+    public void OnTarget(InputAction.CallbackContext context)
+    {
+        bool target = context.ReadValue<float>() > 0.01f;
+
+        gameCam.SwitchTargetView(target);
     }
 }

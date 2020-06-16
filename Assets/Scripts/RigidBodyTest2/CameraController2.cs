@@ -12,32 +12,63 @@ public class CameraController2 : MonoBehaviour
     private Transform followForm;
     [SerializeField]
     private float camSmoothDampTime = 0.1f;
-    [SerializeField]
-    private Vector3 offset = new Vector3(0.0f, 1.5f, 0.0f);
+
 
     private Vector3 velocityCamSmooth = Vector3.zero;
     private Vector3 lookDir;
     private Vector3 targetPosition;
+    private CamStates camState = CamStates.Behind;
+
+    public enum CamStates
+    {
+        Behind,
+        FirstPerson,
+        Target,
+        Free
+    }
+
+    private void Start()
+    {
+        lookDir = followForm.forward;
+    }
 
     private void LateUpdate()
     {
-        Vector3 characterOffset = followForm.position + offset;
+        Vector3 characterOffset = followForm.position + new Vector3(0f, distanceUp, 0f);
 
-        lookDir = characterOffset - this.transform.position;
-        lookDir.y = 0.0f;
-        lookDir.Normalize();
-        Debug.DrawRay(this.transform.position, lookDir, Color.green);
+        switch(camState)
+        {
+            case CamStates.Behind:
+                lookDir = characterOffset - this.transform.position;
+                lookDir.y = 0.0f;
+                lookDir.Normalize();
+                Debug.DrawRay(this.transform.position, lookDir, Color.green);
+
+                targetPosition = characterOffset + followForm.up * distanceUp - lookDir * distanceAway;
+                Debug.DrawLine(followForm.position, targetPosition, Color.magenta);
+                break;
+            case CamStates.Target:
+                lookDir = followForm.forward;
+                break;
+        }
 
         targetPosition = characterOffset + followForm.up * distanceUp - lookDir * distanceAway;
-        Debug.DrawLine(followForm.position, targetPosition, Color.magenta);
 
         SmoothPosition(this.transform.position, targetPosition);
 
-        transform.LookAt(followForm);
+        transform.LookAt(characterOffset);
     }
 
-    void SmoothPosition(Vector3 fromPos, Vector3 toPos)
+    private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
     {
         transform.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
+    }
+
+    public void SwitchTargetView(bool target)
+    {
+        if (target)
+            camState = CamStates.Target;
+        else
+            camState = CamStates.Behind;
     }
 }
