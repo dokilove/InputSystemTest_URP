@@ -348,8 +348,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceAway: 3.25
   distanceUp: 1.25
-  followForm: {fileID: 1242912159}
+  follow: {fileID: 1134206520}
   camSmoothDampTime: 0.1
+  firstPersonLookSpeed: 1.5
+  firstPersonXAxisClamp: {x: -70, y: 60}
+  fpsRotationDegreePerSecond: 120
+  camState: 0
 --- !u!1 &1083566664
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,12 +644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1ec33bb9d0c114e82f4a37a3194ef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1242912159 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7677614167768666916, guid: ec0730cf14768e146bc7fd1073a3e446,
-    type: 3}
-  m_PrefabInstance: {fileID: 7677614166593423035}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1295144244
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,6 +951,21 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: f6001d65-c20f-4ecf-9ee3-b15f95a435ed
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1134206520}
+        m_MethodName: OnFirstPersonView
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2ca17886-4f66-44c8-ac84-18e5baa39d57
+    m_ActionName: Player/FIrstPersonView[/XInputControllerWindows/rightTrigger]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

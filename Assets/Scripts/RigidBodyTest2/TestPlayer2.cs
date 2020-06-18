@@ -19,6 +19,8 @@ public class TestPlayer2 : MonoBehaviour
 
     private Vector2 direction = Vector2.zero;
 
+    public Vector2 Direction { get { return direction; } }
+
     private void Awake()
     {
         rigidBody = this.GetComponent<Rigidbody>();
@@ -26,18 +28,20 @@ public class TestPlayer2 : MonoBehaviour
 
     private void Update()
     {
-        StickToWorldSpace(this.transform, gameCam.transform, ref moveDirection);
-
-        if (moveDirection.sqrMagnitude > 0.0f)
+        if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
         {
-            float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(moveDirection.x, moveDirection.z);
-            float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            StickToWorldSpace(this.transform, gameCam.transform, ref moveDirection);
 
-            rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
+            if (moveDirection.sqrMagnitude > 0.0f)
+            {
+                float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(moveDirection.x, moveDirection.z);
+                float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+
+                rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
+            }
+
+            rigidBody.velocity = moveDirection * moveVelocity;
         }
-
-        rigidBody.velocity = moveDirection * moveVelocity;
-
     }
 
     public void StickToWorldSpace(Transform root, Transform camera, ref Vector3 moveDirectionOut)
@@ -65,5 +69,13 @@ public class TestPlayer2 : MonoBehaviour
         bool target = context.ReadValue<float>() > 0.01f;
 
         gameCam.SwitchTargetView(target);
+    }
+
+    public void OnFirstPersonView(InputAction.CallbackContext context)
+    {
+        bool fpView = context.ReadValue<float>() >= 1.0f;
+
+        if (fpView)
+            gameCam.SwitchFirstPersonView();
     }
 }
