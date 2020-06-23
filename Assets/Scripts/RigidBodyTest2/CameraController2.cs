@@ -36,11 +36,15 @@ public class CameraController2 : MonoBehaviour
     private Vector2 firstPersonXAxisClamp = new Vector2(-70.0f, 60.0f);
     [SerializeField]
     private float fpsRotationDegreePerSecond = 120.0f;
+    [SerializeField]
+    private float lookDirDampTime = 0.1f;
 
     private Transform followForm;
 
     private Vector3 velocityCamSmooth = Vector3.zero;
+    private Vector3 velocityLookDir = Vector3.zero;
     private Vector3 lookDir;
+    private Vector3 curLookDir;
     private Vector3 targetPosition;
     private float xAxisRot = 0.0f;
     private CameraPosition firstPersonCamPos;
@@ -62,6 +66,7 @@ public class CameraController2 : MonoBehaviour
         followForm = follow.transform;
 
         lookDir = followForm.forward;
+        curLookDir = followForm.forward;
 
         firstPersonCamPos = new CameraPosition();
         firstPersonCamPos.Init("First Person Camera", new Vector3(0f, 1.4f, 0.8f), new GameObject().transform, followForm);
@@ -75,16 +80,35 @@ public class CameraController2 : MonoBehaviour
         switch(camState)
         {
             case CamStates.Behind:
-                lookDir = characterOffset - this.transform.position;
-                lookDir.y = 0.0f;
-                lookDir.Normalize();
-                Debug.DrawRay(this.transform.position, lookDir, Color.green);
+                ResetCamera();
 
-                targetPosition = characterOffset + followForm.up * distanceUp - lookDir * distanceAway;
-                Debug.DrawLine(followForm.position, targetPosition, Color.magenta);
+                if (follow.Speed > 0.0f)
+                {
+                    float dotForward = Vector3.Dot(this.transform.forward, followForm.forward);
+                    lookDir = Vector3.Lerp(
+                        // 캐릭터가 좌우회전할 때 lookDir을 forward로
+                        followForm.right * (follow.Direction.x < 0f ? 1f : -1f),
+                        // 캐릭터가 전후이동할 때 lookDir을 forward로
+                        followForm.forward * (follow.Direction.y < 0f ? -1f : 1f),
+                        Mathf.Abs(dotForward)
+                        );
+                    Debug.DrawRay(this.transform.position, lookDir, Color.white);
+
+                    curLookDir = Vector3.Normalize(characterOffset - this.transform.position);
+                    curLookDir.y = 0.0f;
+                    Debug.DrawRay(this.transform.position, curLookDir, Color.green);
+
+                    curLookDir = Vector3.SmoothDamp(curLookDir, lookDir, ref velocityLookDir, lookDirDampTime);
+                }
+
+                targetPosition = characterOffset + followForm.up * distanceUp - Vector3.Normalize(curLookDir) * distanceAway;
+                //Debug.DrawLine(followForm.position, targetPosition, Color.magenta);
                 break;
             case CamStates.Target:
+                ResetCamera();
+
                 lookDir = followForm.forward;
+                curLookDir = followForm.forward;
 
                 targetPosition = characterOffset + followForm.up * distanceUp - lookDir * distanceAway;
                 break;
@@ -124,6 +148,11 @@ public class CameraController2 : MonoBehaviour
     private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
     {
         transform.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
+    }
+
+    private void ResetCamera()
+    {
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, Time.deltaTime);
     }
 
     public void SwitchTargetView(bool target)

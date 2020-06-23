@@ -15,11 +15,13 @@ public class TestPlayer2 : MonoBehaviour
 
     private Rigidbody rigidBody;
     private Vector3 moveDirection;
+    private float speed = 0.0f;
     float turnSmoothVelocity;
 
     private Vector2 direction = Vector2.zero;
 
     public Vector2 Direction { get { return direction; } }
+    public float Speed { get { return speed; } }
 
     private void Awake()
     {
@@ -30,9 +32,9 @@ public class TestPlayer2 : MonoBehaviour
     {
         if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
         {
-            StickToWorldSpace(this.transform, gameCam.transform, ref moveDirection);
+            StickToWorldSpace(this.transform, gameCam.transform, ref moveDirection, ref speed);
 
-            if (moveDirection.sqrMagnitude > 0.0f)
+            if (speed > 0.0f)
             {
                 float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(moveDirection.x, moveDirection.z);
                 float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -44,12 +46,12 @@ public class TestPlayer2 : MonoBehaviour
         }
     }
 
-    public void StickToWorldSpace(Transform root, Transform camera, ref Vector3 moveDirectionOut)
+    public void StickToWorldSpace(Transform root, Transform camera, ref Vector3 moveDirectionOut, ref float speedOut)
     {
         Vector3 rootDirection = root.forward;
         Vector3 stickDirection = new Vector3(direction.x, 0.0f, direction.y);
 
-        //speedOut = stickDirection.sqrMagnitude;
+        speedOut = stickDirection.sqrMagnitude;
 
         Vector3 cameraDirection = camera.forward;
         cameraDirection.y = 0.0f;
@@ -71,11 +73,25 @@ public class TestPlayer2 : MonoBehaviour
         gameCam.SwitchTargetView(target);
     }
 
+
+    private bool runFpView = false;
     public void OnFirstPersonView(InputAction.CallbackContext context)
     {
-        bool fpView = context.ReadValue<float>() >= 1.0f;
+        if (speed > 0.0f)
+            return;
+
+        bool fpView = context.ReadValue<float>() >= 0.0f;
 
         if (fpView)
-            gameCam.SwitchFirstPersonView();
+        {
+            if (!runFpView)
+            {
+                runFpView = true;
+                gameCam.SwitchFirstPersonView();
+            }
+        }
+
+        if (context.ReadValue<float>() == 0.0f)
+            runFpView = false;
     }
 }
