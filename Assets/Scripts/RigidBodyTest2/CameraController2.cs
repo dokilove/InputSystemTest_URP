@@ -23,9 +23,15 @@ struct CameraPosition
 public class CameraController2 : MonoBehaviour
 {
     [SerializeField]
+    private Transform parentRig;
+    [SerializeField]
     private float distanceAway;
     [SerializeField]
     private float distanceUp;
+    [SerializeField]
+    private float distanceAwayMultiplier = 1.5f;
+    [SerializeField]
+    private float distanceUpMultiplier = 5f;
     [SerializeField]
     private TestPlayer2 follow;
     [SerializeField]
@@ -38,6 +44,12 @@ public class CameraController2 : MonoBehaviour
     private float fpsRotationDegreePerSecond = 120.0f;
     [SerializeField]
     private float lookDirDampTime = 0.1f;
+    [SerializeField]
+    private Vector2 camMinDistFromChar = new Vector2(1f, -0.5f);
+    [SerializeField]
+    private float rightStickThreshold = 0.1f;
+    [SerializeField]
+    private const float freeRotationDegreePerSecond = -5f;
 
     private Transform followForm;
 
@@ -45,9 +57,12 @@ public class CameraController2 : MonoBehaviour
     private Vector3 velocityLookDir = Vector3.zero;
     private Vector3 lookDir;
     private Vector3 curLookDir;
-    private Vector3 targetPosition;
     private float xAxisRot = 0.0f;
     private CameraPosition firstPersonCamPos;
+    private Vector3 savedRigToGoal;
+    public Vector2 rightStickPrevFrame = Vector2.zero;
+    private float distanceAwayFree;
+    private float distanceUpFree;
 
     [SerializeField]
     private CamStates camState = CamStates.Behind;
@@ -63,6 +78,8 @@ public class CameraController2 : MonoBehaviour
 
     private void Start()
     {
+        parentRig = this.transform.parent;
+
         followForm = follow.transform;
 
         lookDir = followForm.forward;
@@ -76,6 +93,7 @@ public class CameraController2 : MonoBehaviour
     {
         Vector3 characterOffset = followForm.position + new Vector3(0f, distanceUp, 0f);
         Vector3 lookAt = characterOffset;
+        Vector3 targetPosition = Vector3.zero;
 
         switch(camState)
         {
@@ -138,16 +156,61 @@ public class CameraController2 : MonoBehaviour
                 lookAt = Vector3.Lerp(this.transform.position + this.transform.forward, lookAt, Vector3.Distance(this.transform.position, firstPersonCamPos.XForm.position));
 
                 break;
+
+            case CamStates.Free:
+                ResetCamera();
+
+                Vector3 rigToGoalDirection = Vector3.Normalize(characterOffset - this.transform.position);
+                rigToGoalDirection.y = 0.0f;
+
+                Vector3 rigToGoal = characterOffset - parentRig.position;
+                rigToGoal.y = 0.0f;
+
+                Debug.DrawRay(parentRig.position, rigToGoal, Color.yellow);
+                Debug.DrawRay(this.transform.position, rigToGoalDirection, Color.green);
+
+                // 카메라 높이 및 거리 조절
+                if (follow.LookDir.y < -1f * rightStickThreshold && follow.LookDir.y <= rightStickPrevFrame.y)
+                {
+                    distanceUpFree = Mathf.Lerp(distanceUp, distanceUp * distanceUpMultiplier, Mathf.Abs(follow.LookDir.y));
+                    distanceAwayFree = Mathf.Lerp(distanceAway, distanceAway * distanceAwayMultiplier, Mathf.Abs(follow.LookDir.y));
+                    targetPosition = characterOffset + followForm.up * distanceUpFree - rigToGoalDirection * distanceAwayFree;
+                }
+                else if (follow.LookDir.y > rightStickThreshold && follow.LookDir.y >= rightStickPrevFrame.y)
+                {
+                    distanceUpFree = Mathf.Lerp(Mathf.Abs(transform.position.y - characterOffset.y), camMinDistFromChar.y, follow.LookDir.y);
+                    distanceAwayFree = Mathf.Lerp(rigToGoal.magnitude, camMinDistFromChar.x, follow.LookDir.y);
+                    targetPosition = characterOffset + followForm.up * distanceUpFree - rigToGoalDirection * distanceAwayFree;
+                }
+
+                if (follow.LookDir.x != 0.0f || follow.LookDir.y != 0.0f)
+                {
+                    savedRigToGoal = rigToGoalDirection;
+                }
+                Debug.DrawRay(this.transform.position, savedRigToGoal, Color.white);
+                Debug.DrawRay(this.transform.position, rigToGoalDirection, Color.black);
+
+                // 카메라 회전
+                parentRig.RotateAround(characterOffset, followForm.up, freeRotationDegreePerSecond * follow.LookDir.x);
+
+                if (targetPosition == Vector3.zero)
+                {
+                    targetPosition = characterOffset + followForm.up * distanceUpFree - savedRigToGoal * distanceAwayFree;
+                }
+
+                break;
         }
 
-        SmoothPosition(this.transform.position, targetPosition);
+        SmoothPosition(parentRig.position, targetPosition);
 
         transform.LookAt(lookAt);
+
+        rightStickPrevFrame = follow.LookDir;
     }
 
     private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
     {
-        transform.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
+        parentRig.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
     }
 
     private void ResetCamera()
@@ -174,9 +237,16 @@ public class CameraController2 : MonoBehaviour
                 camState = CamStates.Behind;
                 break;
             case CamStates.Behind:
+            case CamStates.Free:
                 xAxisRot = 0.0f;
                 camState = CamStates.FirstPerson;
                 break;
         }
+    }
+
+    public void SwitchFreeView()
+    {
+        camState = CamStates.Free;
+        savedRigToGoal = Vector3.zero;
     }
 }

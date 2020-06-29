@@ -19,8 +19,10 @@ public class TestPlayer2 : MonoBehaviour
     float turnSmoothVelocity;
 
     private Vector2 direction = Vector2.zero;
+    private Vector2 lookDir = Vector2.zero;
 
     public Vector2 Direction { get { return direction; } }
+    public Vector2 LookDir { get { return lookDir; } }
     public float Speed { get { return speed; } }
 
     private void Awake()
@@ -58,12 +60,26 @@ public class TestPlayer2 : MonoBehaviour
 
         Quaternion referentialShift = Quaternion.FromToRotation(Vector3.forward, cameraDirection);
 
+        Debug.DrawRay(camera.position + Vector3.up, cameraDirection, Color.green);
+
         moveDirectionOut = referentialShift * stickDirection;
+
+        Debug.DrawRay(camera.position + Vector3.up, moveDirectionOut, Color.blue);
     }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
         direction = context.ReadValue<Vector2>();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        lookDir = context.ReadValue<Vector2>();
+
+        if (gameCam.CamState != CameraController2.CamStates.Free)
+        {
+            gameCam.SwitchFreeView();
+        }
     }
 
     public void OnTarget(InputAction.CallbackContext context)
