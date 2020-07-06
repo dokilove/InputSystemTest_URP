@@ -63,7 +63,8 @@ public class CameraController2 : MonoBehaviour
     public Vector2 rightStickPrevFrame = Vector2.zero;
     private float distanceAwayFree;
     private float distanceUpFree;
-
+    private Vector3 freeLookDir;
+    
     [SerializeField]
     private CamStates camState = CamStates.Behind;
     public CamStates CamState { get { return camState; } }
@@ -160,44 +161,63 @@ public class CameraController2 : MonoBehaviour
             case CamStates.Free:
                 ResetCamera();
 
-                Vector3 rigToGoalDirection = Vector3.Normalize(characterOffset - this.transform.position);
-                rigToGoalDirection.y = 0.0f;
+                //Vector3 rigToGoalDirection = Vector3.Normalize(characterOffset - this.transform.position);
+                //rigToGoalDirection.y = 0.0f;
 
-                Vector3 rigToGoal = characterOffset - parentRig.position;
-                rigToGoal.y = 0.0f;
+                //Vector3 rigToGoal = characterOffset - parentRig.position;
+                //rigToGoal.y = 0.0f;
 
-                Debug.DrawRay(parentRig.position, rigToGoal, Color.yellow);
-                Debug.DrawRay(this.transform.position, rigToGoalDirection, Color.green);
+                //Debug.DrawRay(parentRig.position, rigToGoal, Color.yellow);
+                //Debug.DrawRay(this.transform.position, rigToGoalDirection, Color.green);
 
-                // 카메라 높이 및 거리 조절
+                //// 카메라 높이 및 거리 조절
+                //if (follow.LookDir.y < -1f * rightStickThreshold && follow.LookDir.y <= rightStickPrevFrame.y)
+                //{
+                //    distanceUpFree = Mathf.Lerp(distanceUp, distanceUp * distanceUpMultiplier, Mathf.Abs(follow.LookDir.y));
+                //    distanceAwayFree = Mathf.Lerp(distanceAway, distanceAway * distanceAwayMultiplier, Mathf.Abs(follow.LookDir.y));
+                //    targetPosition = characterOffset + followForm.up * distanceUpFree - rigToGoalDirection * distanceAwayFree;
+                //}
+                //else if (follow.LookDir.y > rightStickThreshold && follow.LookDir.y >= rightStickPrevFrame.y)
+                //{
+                //    distanceUpFree = Mathf.Lerp(Mathf.Abs(transform.position.y - characterOffset.y), camMinDistFromChar.y, follow.LookDir.y);
+                //    distanceAwayFree = Mathf.Lerp(rigToGoal.magnitude, camMinDistFromChar.x, follow.LookDir.y);
+                //    targetPosition = characterOffset + followForm.up * distanceUpFree - rigToGoalDirection * distanceAwayFree;
+                //}
                 if (follow.LookDir.y < -1f * rightStickThreshold && follow.LookDir.y <= rightStickPrevFrame.y)
                 {
                     distanceUpFree = Mathf.Lerp(distanceUp, distanceUp * distanceUpMultiplier, Mathf.Abs(follow.LookDir.y));
                     distanceAwayFree = Mathf.Lerp(distanceAway, distanceAway * distanceAwayMultiplier, Mathf.Abs(follow.LookDir.y));
-                    targetPosition = characterOffset + followForm.up * distanceUpFree - rigToGoalDirection * distanceAwayFree;
                 }
                 else if (follow.LookDir.y > rightStickThreshold && follow.LookDir.y >= rightStickPrevFrame.y)
                 {
-                    distanceUpFree = Mathf.Lerp(Mathf.Abs(transform.position.y - characterOffset.y), camMinDistFromChar.y, follow.LookDir.y);
-                    distanceAwayFree = Mathf.Lerp(rigToGoal.magnitude, camMinDistFromChar.x, follow.LookDir.y);
-                    targetPosition = characterOffset + followForm.up * distanceUpFree - rigToGoalDirection * distanceAwayFree;
+                    distanceUpFree = Mathf.Lerp(Mathf.Abs(parentRig.position.y - characterOffset.y), camMinDistFromChar.y, follow.LookDir.y);
+                    distanceAwayFree = Mathf.Lerp(freeLookDir.magnitude, camMinDistFromChar.x, follow.LookDir.y);
                 }
 
+                //if (follow.LookDir.x != 0.0f || follow.LookDir.y != 0.0f)
+                //{
+                //    savedRigToGoal = rigToGoalDirection;
+                //}
+                //Debug.DrawRay(this.transform.position, savedRigToGoal, Color.white);
+                //Debug.DrawRay(this.transform.position, rigToGoalDirection, Color.black);
+                // 카메라 회전
+                parentRig.RotateAround(characterOffset, followForm.up, freeRotationDegreePerSecond * follow.LookDir.x * -1f);
+
+                //if (targetPosition == Vector3.zero)
+                //{
+                //    targetPosition = characterOffset + followForm.up * distanceUpFree - savedRigToGoal * distanceAwayFree;
+                //}
+
+                // 키입력이 있을 때만 카메라 기준 포지션 수정
                 if (follow.LookDir.x != 0.0f || follow.LookDir.y != 0.0f)
                 {
-                    savedRigToGoal = rigToGoalDirection;
+                    SetFreeLookDir();
                 }
-                Debug.DrawRay(this.transform.position, savedRigToGoal, Color.white);
-                Debug.DrawRay(this.transform.position, rigToGoalDirection, Color.black);
-
-                // 카메라 회전
-                parentRig.RotateAround(characterOffset, followForm.up, freeRotationDegreePerSecond * follow.LookDir.x);
 
                 if (targetPosition == Vector3.zero)
                 {
-                    targetPosition = characterOffset + followForm.up * distanceUpFree - savedRigToGoal * distanceAwayFree;
+                    targetPosition = characterOffset + followForm.up * distanceUpFree - Vector3.Normalize(freeLookDir) * distanceAwayFree;
                 }
-
                 break;
         }
 
@@ -216,6 +236,12 @@ public class CameraController2 : MonoBehaviour
     private void ResetCamera()
     {
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, Time.deltaTime);
+    }
+
+    private void SetFreeLookDir()
+    {
+        freeLookDir = Vector3.Normalize(followForm.position + new Vector3(0f, distanceUp, 0f) - parentRig.position);
+        freeLookDir.y = 0.0f;
     }
 
     public void SwitchTargetView(bool target)
@@ -248,5 +274,6 @@ public class CameraController2 : MonoBehaviour
     {
         camState = CamStates.Free;
         savedRigToGoal = Vector3.zero;
+        SetFreeLookDir();
     }
 }

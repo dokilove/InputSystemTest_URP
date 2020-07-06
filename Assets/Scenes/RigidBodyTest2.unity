@@ -349,12 +349,17 @@ MonoBehaviour:
   parentRig: {fileID: 0}
   distanceAway: 3.25
   distanceUp: 1.25
+  distanceAwayMultiplier: 1.5
+  distanceUpMultiplier: 5
   follow: {fileID: 1134206520}
   camSmoothDampTime: 0.1
   firstPersonLookSpeed: 1.5
   firstPersonXAxisClamp: {x: -70, y: 60}
   fpsRotationDegreePerSecond: 120
   lookDirDampTime: 0.1
+  camMinDistFromChar: {x: 1, y: -0.5}
+  rightStickThreshold: 0.1
+  rightStickPrevFrame: {x: 0, y: 0}
   camState: 0
 --- !u!1 &1083566664
 GameObject:
@@ -1265,6 +1270,11 @@ PrefabInstance:
       propertyPath: gameCam
       value: 
       objectReference: {fileID: 932263055}
+    - target: {fileID: 7677614166289646815, guid: ec0730cf14768e146bc7fd1073a3e446,
+        type: 3}
+      propertyPath: moveVelocity
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7677614167054793350, guid: ec0730cf14768e146bc7fd1073a3e446,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
