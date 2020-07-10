@@ -77,6 +77,8 @@ public class CameraController2 : MonoBehaviour
         Free
     }
 
+    PlanarReflections _planarReflections;
+
     private void Start()
     {
         parentRig = this.transform.parent;
@@ -88,6 +90,11 @@ public class CameraController2 : MonoBehaviour
 
         firstPersonCamPos = new CameraPosition();
         firstPersonCamPos.Init("First Person Camera", new Vector3(0f, 1.4f, 0.8f), new GameObject().transform, followForm);
+
+        if (!gameObject.TryGetComponent(out _planarReflections))
+        {
+            _planarReflections = gameObject.AddComponent<PlanarReflections>();
+        }
     }
 
     private void LateUpdate()
