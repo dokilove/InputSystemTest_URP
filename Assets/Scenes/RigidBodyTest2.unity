@@ -8377,6 +8377,14 @@ MonoBehaviour:
   camMinDistFromChar: {x: 1, y: -0.5}
   rightStickThreshold: 0.1
   rightStickPrevFrame: {x: 0, y: 0}
+  collision:
+    collisionLayer:
+      serializedVersion: 2
+      m_Bits: 512
+    colliding: 0
+    adjustedCameraClipPoints: []
+    desiredCameraClipPoints: []
+    collisionSpace: 2
   camState: 0
 --- !u!114 &932263056
 MonoBehaviour:

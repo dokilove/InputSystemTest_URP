@@ -64,7 +64,10 @@ public class CameraController2 : MonoBehaviour
     private float distanceAwayFree;
     private float distanceUpFree;
     private Vector3 freeLookDir;
-    
+
+    public CollisionHandler collision = new CollisionHandler();
+    private float adjustedDistance = 0.0f;
+
     [SerializeField]
     private CamStates camState = CamStates.Behind;
     public CamStates CamState { get { return camState; } }
@@ -95,6 +98,10 @@ public class CameraController2 : MonoBehaviour
         {
             _planarReflections = gameObject.AddComponent<PlanarReflections>();
         }
+
+        // collision Init
+        collision.Initialize(this.GetComponent<Camera>());
+        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
     }
 
     private void LateUpdate()
@@ -228,11 +235,24 @@ public class CameraController2 : MonoBehaviour
                 break;
         }
 
+        if (collision.colliding)
+        {
+            curLookDir = Vector3.Normalize(characterOffset - this.transform.position);
+            curLookDir.y = 0.0f;
+            targetPosition = characterOffset + followForm.up * distanceUp - Vector3.Normalize(curLookDir) * adjustedDistance;
+        }
+
         SmoothPosition(parentRig.position, targetPosition);
 
         transform.LookAt(lookAt);
 
         rightStickPrevFrame = follow.LookDir;
+
+        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
+        collision.UpdateCameraClipPoints(targetPosition, transform.rotation, ref collision.desiredCameraClipPoints);
+
+        collision.CheckColliding(targetPosition);
+        adjustedDistance = collision.GetAdjustedDistanceWithRayFrom(targetPosition);
     }
 
     private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
