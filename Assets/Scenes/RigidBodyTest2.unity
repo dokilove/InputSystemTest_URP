@@ -8375,7 +8375,7 @@ MonoBehaviour:
   fpsRotationDegreePerSecond: 120
   lookDirDampTime: 0.1
   camMinDistFromChar: {x: 1, y: -0.5}
-  rightStickThreshold: 0.1
+  rightStickThreshold: 0.25
   rightStickPrevFrame: {x: 0, y: 0}
   collision:
     collisionLayer:

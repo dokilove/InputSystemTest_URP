@@ -120,6 +120,6 @@ public class CameraController : MonoBehaviour
         }
 
         camRotX += -inputController.rotate.y;
-        camRotY += -inputController.rotate.x;
+        camRotY += inputController.rotate.x;
     }
 }
