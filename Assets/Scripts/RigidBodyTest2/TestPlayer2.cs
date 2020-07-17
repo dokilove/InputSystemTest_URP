@@ -55,12 +55,17 @@ public class TestPlayer2 : MonoBehaviour
 
         speedOut = stickDirection.sqrMagnitude;
 
+        Debug.Log(stickDirection);
+
+
         Vector3 cameraDirection = camera.forward;
         cameraDirection.y = 0.0f;
+        cameraDirection = cameraDirection.normalized;
 
         Quaternion referentialShift = Quaternion.FromToRotation(Vector3.forward, cameraDirection);
 
         Debug.DrawRay(camera.position + Vector3.up, cameraDirection, Color.green);
+        Debug.DrawRay(camera.position + Vector3.up, stickDirection, Color.red);
 
         moveDirectionOut = referentialShift * stickDirection;
 
@@ -70,6 +75,8 @@ public class TestPlayer2 : MonoBehaviour
     public void OnMovement(InputAction.CallbackContext context)
     {
         direction = context.ReadValue<Vector2>();
+        //if (Mathf.Abs(direction.y) < 0.2f)
+        //    direction.y = 0.0f;
     }
 
     public void OnLook(InputAction.CallbackContext context)

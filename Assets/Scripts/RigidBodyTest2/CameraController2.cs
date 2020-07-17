@@ -64,6 +64,8 @@ public class CameraController2 : MonoBehaviour
     private float distanceAwayFree;
     private float distanceUpFree;
     private Vector3 freeLookDir;
+    private float camRotX = 0.0f;
+    private float camRotY = 0.0f;
 
     public CollisionHandler collision = new CollisionHandler();
     private float adjustedDistance = 0.0f;
@@ -228,16 +230,15 @@ public class CameraController2 : MonoBehaviour
                 // 키입력이 있을 때만 카메라 기준 포지션 수정
                 if (follow.LookDir.x != 0.0f || follow.LookDir.y != 0.0f)
                 {
-                    SetFreeLookDir();
                     OrbitTarget();
                 }
-                destination = Quaternion.Euler(camRotX, camRotY, 0.0f) * Vector3.forward;
 
                 if (targetPosition == Vector3.zero)
                 {
                     //targetPosition = characterOffset + followForm.up * distanceUpFree - Vector3.Normalize(freeLookDir) * distanceAwayFree;
-                    targetPosition = characterOffset - Vector3.Normalize(destination) * distanceAway;
+                    
                 }
+                targetPosition = characterOffset - Vector3.Normalize(freeLookDir) * distanceAway;
                 break;
         }
 
@@ -260,19 +261,22 @@ public class CameraController2 : MonoBehaviour
         collision.CheckColliding(targetPosition);
         adjustedDistance = collision.GetAdjustedDistanceWithRayFrom(targetPosition);
     }
-    Vector3 destination;
 
-    float camRotX = 0.0f;
-    float camRotY = 0.0f;
     private void OrbitTarget()
     {
         if ((follow.LookDir.y < -1f * rightStickThreshold && follow.LookDir.y <= rightStickPrevFrame.y)
              ||
              (follow.LookDir.y > rightStickThreshold && follow.LookDir.y >= rightStickPrevFrame.y))
         {
+
             camRotX += -follow.LookDir.y;
+
+            if (camRotX > 89.0f)
+                camRotX = 89.0f;
         }
         camRotY += follow.LookDir.x;
+
+        freeLookDir = Quaternion.Euler(camRotX, camRotY, 0.0f) * Vector3.forward;
     }
 
     private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
@@ -324,9 +328,7 @@ public class CameraController2 : MonoBehaviour
         SetFreeLookDir();
 
         Vector3 angels = (this.transform.localRotation).eulerAngles;
-
-        Debug.Log(angels.x  + " " + angels.y);
-      
+              
         camRotY = angels.y;
         camRotX = angels.x;
     }

@@ -8369,7 +8369,7 @@ MonoBehaviour:
   distanceAwayMultiplier: 2
   distanceUpMultiplier: 2
   follow: {fileID: 1134206520}
-  camSmoothDampTime: 0.1
+  camSmoothDampTime: 0
   firstPersonLookSpeed: 1.5
   firstPersonXAxisClamp: {x: -70, y: 60}
   fpsRotationDegreePerSecond: 120
