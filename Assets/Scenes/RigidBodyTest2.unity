@@ -8364,7 +8364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentRig: {fileID: 0}
-  distanceAway: 3.25
+  distanceAway: 6
   distanceUp: 1.25
   distanceAwayMultiplier: 2
   distanceUpMultiplier: 2
@@ -15986,7 +15986,7 @@ GameObject:
   - component: {fileID: 1811794236}
   - component: {fileID: 1811794235}
   - component: {fileID: 1811794234}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

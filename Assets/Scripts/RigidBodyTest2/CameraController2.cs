@@ -67,6 +67,8 @@ public class CameraController2 : MonoBehaviour
     private float camRotX = 0.0f;
     private float camRotY = 0.0f;
 
+    private bool camCollided = false;
+
     public CollisionHandler collision = new CollisionHandler();
     private float adjustedDistance = 0.0f;
 
@@ -112,7 +114,9 @@ public class CameraController2 : MonoBehaviour
         Vector3 lookAt = characterOffset;
         Vector3 targetPosition = Vector3.zero;
 
-        switch(camState)
+        float camDistance = distanceAway;
+
+        switch (camState)
         {
             case CamStates.Behind:
                 ResetCamera();
@@ -136,7 +140,11 @@ public class CameraController2 : MonoBehaviour
                     curLookDir = Vector3.SmoothDamp(curLookDir, lookDir, ref velocityLookDir, lookDirDampTime);
                 }
 
-                targetPosition = characterOffset + followForm.up * distanceUp - Vector3.Normalize(curLookDir) * distanceAway;
+                if (collision.colliding)
+                {
+                    camDistance = adjustedDistance;
+                }
+                targetPosition = characterOffset + followForm.up * distanceUp - Vector3.Normalize(curLookDir) * camDistance;
                 //Debug.DrawLine(followForm.position, targetPosition, Color.magenta);
                 break;
             case CamStates.Target:
@@ -145,7 +153,11 @@ public class CameraController2 : MonoBehaviour
                 lookDir = followForm.forward;
                 curLookDir = followForm.forward;
 
-                targetPosition = characterOffset + followForm.up * distanceUp - lookDir * distanceAway;
+                if (collision.colliding)
+                {
+                    camDistance = adjustedDistance;
+                }
+                targetPosition = characterOffset + followForm.up * distanceUp - lookDir * camDistance;
                 break;
             case CamStates.FirstPerson:
                 // 위 아래 보기
@@ -177,55 +189,6 @@ public class CameraController2 : MonoBehaviour
             case CamStates.Free:
                 ResetCamera();
 
-                //Vector3 rigToGoalDirection = Vector3.Normalize(characterOffset - this.transform.position);
-                //rigToGoalDirection.y = 0.0f;
-
-                //Vector3 rigToGoal = characterOffset - parentRig.position;
-                //rigToGoal.y = 0.0f;
-
-                //Debug.DrawRay(parentRig.position, rigToGoal, Color.yellow);
-                //Debug.DrawRay(this.transform.position, rigToGoalDirection, Color.green);
-
-                //// 카메라 높이 및 거리 조절
-                //if (follow.LookDir.y < -1f * rightStickThreshold && follow.LookDir.y <= rightStickPrevFrame.y)
-                //{
-                //    distanceUpFree = Mathf.Lerp(distanceUp, distanceUp * distanceUpMultiplier, Mathf.Abs(follow.LookDir.y));
-                //    distanceAwayFree = Mathf.Lerp(distanceAway, distanceAway * distanceAwayMultiplier, Mathf.Abs(follow.LookDir.y));
-                //    targetPosition = characterOffset + followForm.up * distanceUpFree - rigToGoalDirection * distanceAwayFree;
-                //}
-                //else if (follow.LookDir.y > rightStickThreshold && follow.LookDir.y >= rightStickPrevFrame.y)
-                //{
-                //    distanceUpFree = Mathf.Lerp(Mathf.Abs(transform.position.y - characterOffset.y), camMinDistFromChar.y, follow.LookDir.y);
-                //    distanceAwayFree = Mathf.Lerp(rigToGoal.magnitude, camMinDistFromChar.x, follow.LookDir.y);
-                //    targetPosition = characterOffset + followForm.up * distanceUpFree - rigToGoalDirection * distanceAwayFree;
-                //}
-
-
-                //if (follow.LookDir.y < -1f * rightStickThreshold && follow.LookDir.y <= rightStickPrevFrame.y)
-                //{
-                //    distanceUpFree = Mathf.Lerp(distanceUp, distanceUp * distanceUpMultiplier, Mathf.Abs(follow.LookDir.y));
-                //    distanceAwayFree = Mathf.Lerp(distanceAway, distanceAway * distanceAwayMultiplier, Mathf.Abs(follow.LookDir.y));
-                //}
-                //else if (follow.LookDir.y > rightStickThreshold && follow.LookDir.y >= rightStickPrevFrame.y)
-                //{
-                //    distanceUpFree = Mathf.Lerp(Mathf.Abs(parentRig.position.y - characterOffset.y), camMinDistFromChar.y, follow.LookDir.y);
-                //    distanceAwayFree = Mathf.Lerp(freeLookDir.magnitude, camMinDistFromChar.x, follow.LookDir.y);
-                //}
-
-                //if (follow.LookDir.x != 0.0f || follow.LookDir.y != 0.0f)
-                //{
-                //    savedRigToGoal = rigToGoalDirection;
-                //}
-                //Debug.DrawRay(this.transform.position, savedRigToGoal, Color.white);
-                //Debug.DrawRay(this.transform.position, rigToGoalDirection, Color.black);
-                // 카메라 회전
-                //parentRkig.RotateAround(characterOffset, followForm.up, freeRotationDegreePerSecond * follow.LookDir.x * -1f);
-                  
-
-                //if (targetPosition == Vector3.zero)
-                //{
-                //    targetPosition = characterOffset + followForm.up * distanceUpFree - savedRigToGoal * distanceAwayFree;
-                //}
 
                 // 키입력이 있을 때만 카메라 기준 포지션 수정
                 if (follow.LookDir.x != 0.0f || follow.LookDir.y != 0.0f)
@@ -233,22 +196,23 @@ public class CameraController2 : MonoBehaviour
                     OrbitTarget();
                 }
 
-                if (targetPosition == Vector3.zero)
+                if (collision.colliding)
                 {
-                    //targetPosition = characterOffset + followForm.up * distanceUpFree - Vector3.Normalize(freeLookDir) * distanceAwayFree;
-                    
+                    camDistance = adjustedDistance;
                 }
-                targetPosition = characterOffset - Vector3.Normalize(freeLookDir) * distanceAway;
+                targetPosition = characterOffset - Vector3.Normalize(freeLookDir) * camDistance;
                 break;
         }
 
-        if (collision.colliding)
-        {
-            curLookDir = Vector3.Normalize(characterOffset - this.transform.position);
-            curLookDir.y = 0.0f;
-            targetPosition = characterOffset - Vector3.Normalize(curLookDir) * adjustedDistance;
-        }
+        //if (collision.colliding)
+        //{
+        //    curLookDir = Vector3.Normalize(characterOffset - parentRig.position);
+        //    curLookDir.y = 0.0f;
+        //    targetPosition = characterOffset - Vector3.Normalize(curLookDir) * adjustedDistance;
+        //    Debug.Log("cam collided!!");
+        //}
 
+        Debug.Log(collision.colliding + " " + parentRig.position + " " + targetPosition);
         SmoothPosition(parentRig.position, targetPosition);
 
         transform.LookAt(lookAt);
@@ -260,6 +224,7 @@ public class CameraController2 : MonoBehaviour
 
         collision.CheckColliding(targetPosition);
         adjustedDistance = collision.GetAdjustedDistanceWithRayFrom(targetPosition);
+        camCollided = collision.colliding;
     }
 
     private void OrbitTarget()

@@ -54,9 +54,7 @@ public class TestPlayer2 : MonoBehaviour
         Vector3 stickDirection = new Vector3(direction.x, 0.0f, direction.y);
 
         speedOut = stickDirection.sqrMagnitude;
-
-        Debug.Log(stickDirection);
-
+        
 
         Vector3 cameraDirection = camera.forward;
         cameraDirection.y = 0.0f;
