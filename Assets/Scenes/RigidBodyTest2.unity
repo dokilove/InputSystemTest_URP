@@ -8376,6 +8376,9 @@ MonoBehaviour:
   lookDirDampTime: 0.1
   camMinDistFromChar: {x: 1, y: -0.5}
   rightStickThreshold: 0.25
+  CAMROTXMAXTRESHOLD: 89
+  CAMROTXMINTRESHOLD: -30
+  rotSpeed: 5
   rightStickPrevFrame: {x: 0, y: 0}
   collision:
     collisionLayer:
