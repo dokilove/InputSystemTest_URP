@@ -161,7 +161,7 @@ public class CameraController2 : MonoBehaviour
                 break;
             case CamStates.FirstPerson:
                 // 위 아래 보기
-                xAxisRot += (-follow.Direction.y * firstPersonLookSpeed);
+                xAxisRot += (-follow.LookDir.y * firstPersonLookSpeed);
                 xAxisRot = Mathf.Clamp(xAxisRot, firstPersonXAxisClamp.x, firstPersonXAxisClamp.y);
                 firstPersonCamPos.XForm.localRotation = Quaternion.Euler(xAxisRot, 0.0f, 0.0f);
 
@@ -171,8 +171,8 @@ public class CameraController2 : MonoBehaviour
 
                 // 캐릭터 좌우 회전
                 Vector3 rotationAmount = Vector3.Lerp(Vector3.zero,
-                    new Vector3(0.0f, fpsRotationDegreePerSecond * (follow.Direction.x < 0.0f ? -1f : 1f), 0.0f),
-                    Mathf.Abs(follow.Direction.x));
+                    new Vector3(0.0f, fpsRotationDegreePerSecond * (follow.LookDir.x < 0.0f ? -1f : 1f), 0.0f),
+                    Mathf.Abs(follow.LookDir.x));
                 Quaternion deltaRoattion = Quaternion.Euler(rotationAmount * Time.deltaTime);
                 follow.transform.rotation = follow.transform.rotation * deltaRoattion;
 
@@ -201,7 +201,7 @@ public class CameraController2 : MonoBehaviour
                 break;
         }
 
-        if (collision.colliding)
+        if (collision.colliding && camState != CamStates.FirstPerson)
         {
             SmoothPosition(parentRig.position, adjustedDestination);
         }
@@ -245,13 +245,25 @@ public class CameraController2 : MonoBehaviour
                 camRotX = CAMROTXMINTRESHOLD;
 
         }
-        camRotY += follow.LookDir.x * rotSpeed;
+
+        if ((follow.LookDir.x < -1f * rightStickThreshold && follow.LookDir.x <= rightStickPrevFrame.x)
+           ||
+           (follow.LookDir.x > rightStickThreshold && follow.LookDir.x >= rightStickPrevFrame.x))
+        {
+            camRotY += follow.LookDir.x * rotSpeed;
+        }
 
         freeLookDir = Quaternion.Euler(camRotX, camRotY, 0.0f) * Vector3.forward;
     }
 
     private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
     {
+        if (camSmoothDampTime == 0.0f)
+        {
+            parentRig.position = toPos;
+            return;
+        }
+
         parentRig.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
     }
 

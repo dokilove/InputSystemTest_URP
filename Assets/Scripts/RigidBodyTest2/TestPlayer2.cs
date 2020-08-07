@@ -32,16 +32,19 @@ public class TestPlayer2 : MonoBehaviour
 
     private void Update()
     {
-        if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
+        //if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
         {
             StickToWorldSpace(this.transform, gameCam.transform, ref moveDirection, ref speed);
 
-            if (speed > 0.0f)
+            if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
             {
-                float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(moveDirection.x, moveDirection.z);
-                float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                if (speed > 0.0f)
+                {
+                    float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(moveDirection.x, moveDirection.z);
+                    float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-                rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
+                    rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
+                }
             }
 
             rigidBody.velocity = moveDirection * moveVelocity;
@@ -81,7 +84,8 @@ public class TestPlayer2 : MonoBehaviour
     {
         lookDir = context.ReadValue<Vector2>();
 
-        if (gameCam.CamState != CameraController2.CamStates.Free)
+        if (gameCam.CamState != CameraController2.CamStates.Free
+            && gameCam.CamState != CameraController2.CamStates.FirstPerson)
         {
             gameCam.SwitchFreeView();
         }
