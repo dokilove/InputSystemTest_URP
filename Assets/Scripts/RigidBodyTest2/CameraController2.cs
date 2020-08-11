@@ -179,10 +179,12 @@ public class CameraController2 : MonoBehaviour
                 // 카메라를 firstPersonCamPos로
                 destination = firstPersonCamPos.XForm.position;
 
-                lookAt = Vector3.Lerp(destination + followForm.forward, this.transform.position + this.transform.forward, camSmoothDampTime * Time.deltaTime);
-
+                //lookAt = Vector3.Lerp(destination + followForm.forward, this.transform.position + this.transform.forward, camSmoothDampTime * Time.deltaTime);
                 // lookAt
-                lookAt = Vector3.Lerp(this.transform.position + this.transform.forward, lookAt, Vector3.Distance(this.transform.position, firstPersonCamPos.XForm.position));
+                //lookAt = Vector3.Lerp(this.transform.position + this.transform.forward, lookAt, Vector3.Distance(this.transform.position, firstPersonCamPos.XForm.position));
+
+                lookAt = this.transform.position + this.transform.forward;
+                transform.LookAt(lookAt);
 
                 break;
 
@@ -211,8 +213,8 @@ public class CameraController2 : MonoBehaviour
         }
 
 
-
-        transform.LookAt(lookAt);
+        if (camState != CamStates.FirstPerson)
+            transform.LookAt(lookAt);
 
         rightStickPrevFrame = follow.LookDir;
 

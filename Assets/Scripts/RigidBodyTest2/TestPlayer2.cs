@@ -69,9 +69,11 @@ public class TestPlayer2 : MonoBehaviour
         Debug.DrawRay(camera.position + Vector3.up, stickDirection, Color.red);
 
         moveDirectionOut = referentialShift * stickDirection;
-
+        
         Debug.DrawRay(camera.position + Vector3.up, moveDirectionOut, Color.blue);
     }
+
+
 
     public void OnMovement(InputAction.CallbackContext context)
     {
@@ -102,9 +104,7 @@ public class TestPlayer2 : MonoBehaviour
     private bool runFpView = false;
     public void OnFirstPersonView(InputAction.CallbackContext context)
     {
-        if (speed > 0.0f)
-            return;
-
+ 
         bool fpView = context.ReadValue<float>() >= 0.0f;
 
         if (fpView)
