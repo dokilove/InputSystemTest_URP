@@ -101,7 +101,7 @@ public class TestPlayer2 : MonoBehaviour
     }
 
 
-    private bool runFpView = false;
+    private bool isFpsViewClicked = false;
     public void OnFirstPersonView(InputAction.CallbackContext context)
     {
  
@@ -109,14 +109,24 @@ public class TestPlayer2 : MonoBehaviour
 
         if (fpView)
         {
-            if (!runFpView)
+            if (!isFpsViewClicked)
             {
-                runFpView = true;
+                isFpsViewClicked = true;
                 gameCam.SwitchFirstPersonView();
             }
         }
 
         if (context.ReadValue<float>() == 0.0f)
-            runFpView = false;
+            isFpsViewClicked = false;
+    }
+
+    public void OnResetCamera(InputAction.CallbackContext context)
+    {
+        bool resetCam = context.ReadValue<float>() >= 0.0f;
+
+        if (resetCam)
+        {
+            gameCam.ResetCameraState();
+        }
     }
 }

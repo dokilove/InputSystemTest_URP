@@ -125,7 +125,7 @@ public class CameraController2 : MonoBehaviour
         switch (camState)
         {
             case CamStates.Behind:
-                ResetCamera();
+                ResetCameraRot();
 
                 if (follow.Speed > 0.0f)
                 {
@@ -151,7 +151,7 @@ public class CameraController2 : MonoBehaviour
                 //Debug.DrawLine(followForm.position, targetPosition, Color.magenta);
                 break;
             case CamStates.Target:
-                ResetCamera();
+                ResetCameraRot();
 
                 lookDir = followForm.forward;
                 curLookDir = followForm.forward;
@@ -189,7 +189,7 @@ public class CameraController2 : MonoBehaviour
                 break;
 
             case CamStates.Free:
-                ResetCamera();
+                ResetCameraRot();
 
 
                 // 키입력이 있을 때만 카메라 기준 포지션 수정
@@ -269,7 +269,7 @@ public class CameraController2 : MonoBehaviour
         parentRig.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
     }
 
-    private void ResetCamera()
+    private void ResetCameraRot()
     {
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, Time.deltaTime);
     }
@@ -296,6 +296,7 @@ public class CameraController2 : MonoBehaviour
             case CamStates.Target:
                 break;
             case CamStates.FirstPerson:
+                xAxisRot = 0.0f;
                 camState = CamStates.Behind;
                 break;
             case CamStates.Behind:
@@ -316,5 +317,36 @@ public class CameraController2 : MonoBehaviour
               
         camRotY = angels.y;
         camRotX = angels.x;
+    }
+
+    public void ResetCameraState()
+    {
+        Vector3 characterOffset = followForm.position + new Vector3(0f, distanceUp, 0f);
+        Vector3 lookAt = characterOffset;
+        Vector3 destination = Vector3.zero;
+        Vector3 adjustedDestination = Vector3.zero;
+
+        float camDistance = distanceAway;
+
+        ResetCameraRot();
+
+        lookDir = followForm.forward;
+        curLookDir = followForm.forward;
+
+        destination = characterOffset + followForm.up * distanceUp - lookDir * camDistance;
+        adjustedDestination = characterOffset + followForm.up * distanceUp - lookDir * adjustedDistance;
+        
+        if (collision.colliding)
+        {
+            SmoothPosition(parentRig.position, adjustedDestination);
+        }
+        else
+        {
+            SmoothPosition(parentRig.position, destination);
+        }
+
+        transform.LookAt(lookAt);
+
+        camState = CamStates.Behind;
     }
 }

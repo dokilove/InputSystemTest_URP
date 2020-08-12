@@ -44,6 +44,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ResetCamera",
+                    "type": "Button",
+                    "id": "f2ce6f13-a691-4515-93a2-38e49b05cf5a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -258,11 +266,11 @@
                 },
                 {
                     "name": "",
-                    "id": "0043dcee-ad2b-49d0-8b96-b376f8c2a13c",
+                    "id": "bd2d5d87-a91a-4c5d-8e93-da1e3a9b0039",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "",
                     "action": "Target",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -275,6 +283,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "FIrstPersonView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14588207-8343-41fe-b0d5-7dd33fd50588",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ResetCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
