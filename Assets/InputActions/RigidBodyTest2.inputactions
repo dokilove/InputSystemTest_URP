@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "27226462-c2ce-461c-abce-af4c366b2f97",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -294,6 +302,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ResetCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0d0d6c5b-79f6-4be6-a240-bdd40e284d46",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

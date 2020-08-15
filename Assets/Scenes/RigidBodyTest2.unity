@@ -8383,7 +8383,7 @@ MonoBehaviour:
   collision:
     collisionLayer:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 768
     colliding: 0
     adjustedCameraClipPoints: []
     desiredCameraClipPoints: []
@@ -14361,6 +14361,21 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f2ce6f13-a691-4515-93a2-38e49b05cf5a
     m_ActionName: Player/ResetCamera[/XInputControllerWindows/rightStickPress]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1134206520}
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 27226462-c2ce-461c-abce-af4c366b2f97
+    m_ActionName: Player/Jump[/XInputControllerWindows/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -16004,7 +16019,7 @@ GameObject:
   - component: {fileID: 1811794236}
   - component: {fileID: 1811794235}
   - component: {fileID: 1811794234}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

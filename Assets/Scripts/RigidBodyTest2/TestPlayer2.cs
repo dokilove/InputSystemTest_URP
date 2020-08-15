@@ -11,7 +11,13 @@ public class TestPlayer2 : MonoBehaviour
     [SerializeField]
     private float moveVelocity = 10.0f;
     [SerializeField]
+    private float jumpVelocity = 10.0f;
+    [SerializeField]
     private float turnSmoothTime = 0.1f;
+    [SerializeField]
+    private float fallMultiplier = 2.5f;
+    [SerializeField]
+    private float lowJumpMultiplier = 2.0f;
 
     private Rigidbody rigidBody;
     private Vector3 moveDirection;
@@ -32,22 +38,32 @@ public class TestPlayer2 : MonoBehaviour
 
     private void Update()
     {
-        //if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
+        StickToWorldSpace(this.transform, gameCam.transform, ref moveDirection, ref speed);
+
+        if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
         {
-            StickToWorldSpace(this.transform, gameCam.transform, ref moveDirection, ref speed);
-
-            if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
+            if (speed > 0.0f)
             {
-                if (speed > 0.0f)
-                {
-                    float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(moveDirection.x, moveDirection.z);
-                    float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(moveDirection.x, moveDirection.z);
+                float angle = Mathf.SmoothDampAngle(rigidBody.rotation.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-                    rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
-                }
+                rigidBody.rotation = (Quaternion.Euler(new Vector3(0, angle, 0)));
             }
+        }
 
-            rigidBody.velocity = moveDirection * moveVelocity;
+        Vector3 moveVel = moveDirection * this.moveVelocity;
+        moveVel.y = rigidBody.velocity.y;
+
+        rigidBody.velocity = moveVel;
+
+        // Better Jump https://www.youtube.com/watch?v=7KiK0Aqtmzc
+        if (rigidBody.velocity.y < 0.0f)
+        {
+            rigidBody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1.0f) * Time.deltaTime;
+        }
+        else if (rigidBody.velocity.y > 0.0f && jumpVal <= 0.0f)
+        {
+            rigidBody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1.0f) * Time.deltaTime;
         }
     }
 
@@ -128,5 +144,25 @@ public class TestPlayer2 : MonoBehaviour
         {
             gameCam.ResetCameraState();
         }
+    }
+
+    private bool isJumpClicked = false;
+    private float jumpVal;
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        jumpVal = context.ReadValue<float>();
+        bool jump =  jumpVal >= 0.0f;
+
+        if (jump && !isJumpClicked)
+        {
+            Vector3 jumpVel = Vector3.up * jumpVelocity;
+            jumpVel.x = rigidBody.velocity.x;
+            jumpVel.z = rigidBody.velocity.z;
+            rigidBody.velocity = jumpVel;
+            isJumpClicked = true;
+        }
+        
+        if (context.ReadValue<float>() == 0.0f)
+            isJumpClicked = false;
     }
 }
