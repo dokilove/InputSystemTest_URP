@@ -6,21 +6,46 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private TestPlayer2 player;
+    private TestPlayer2[] players;
     [SerializeField]
     private CameraController2 gameCam;
-       
+
+    [SerializeField]
+    private int playerIndex = 0;
+
+    private void SetNextPlayer()
+    {
+        playerIndex++;
+        if (playerIndex >= players.Length)
+            playerIndex = 0;
+
+        setCameraFollow();
+    }
+
+    private void SetBackPlayer()
+    {
+        playerIndex--;
+        if (playerIndex < 0)
+            playerIndex = players.Length - 1;
+
+        setCameraFollow();
+    }
+
+    private void setCameraFollow()
+    {
+        gameCam.SetFollow(players[playerIndex]);
+    }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        player.Direction = context.ReadValue<Vector2>();
+        players[playerIndex].Direction = context.ReadValue<Vector2>();
         //if (Mathf.Abs(direction.y) < 0.2f)
         //    direction.y = 0.0f;
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        player.LookDir = context.ReadValue<Vector2>();
+        players[playerIndex].LookDir = context.ReadValue<Vector2>();
 
         if (gameCam.CamState != CameraController2.CamStates.Free
             && gameCam.CamState != CameraController2.CamStates.FirstPerson)
@@ -69,16 +94,42 @@ public class PlayerController : MonoBehaviour
     private bool isJumpClicked = false;
     public void OnJump(InputAction.CallbackContext context)
     {
-        player.JumpVal = context.ReadValue<float>();
-        bool jump = player.JumpVal >= 0.0f;
+        players[playerIndex].JumpVal = context.ReadValue<float>();
+        bool jump = players[playerIndex].JumpVal > 0.0f;
 
         if (jump && !isJumpClicked)
         {
-            player.Jump();
+            players[playerIndex].Jump();
             isJumpClicked = true;
         }
 
         if (context.ReadValue<float>() == 0.0f)
             isJumpClicked = false;
+    }
+
+    private bool isNextPlayerClicked = false;
+    public void OnNextPlayer(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<float>() > 0.0f && !isNextPlayerClicked)
+        {
+            SetNextPlayer();
+            isNextPlayerClicked = true;
+        }
+
+        if (context.ReadValue<float>() == 0.0f)
+            isNextPlayerClicked = false;
+    }
+
+    private bool isBackPlayerClicked = false;
+    public void OnBackPlayer(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<float>() > 0.0f && !isBackPlayerClicked)
+        {
+            SetBackPlayer();
+            isBackPlayerClicked = true;
+        }
+
+        if (context.ReadValue<float>() == 0.0f)
+            isBackPlayerClicked = false;
     }
 }

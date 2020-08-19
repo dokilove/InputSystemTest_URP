@@ -60,6 +60,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "NextPlayer",
+                    "type": "Button",
+                    "id": "4d0a3b10-ff22-4aef-afa2-389bd240ee03",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "BackPlayer",
+                    "type": "Button",
+                    "id": "ee3b6efd-d6cb-4636-8cda-f64c17679b5c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -313,6 +329,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "FirstPersonView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cb687be4-7e01-480d-afac-a64c833c7906",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1912205c-912d-4a9a-ac6f-64ce8f1eb96c",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackPlayer",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -94,14 +94,9 @@ public class CameraController2 : MonoBehaviour
     private void Start()
     {
         parentRig = this.transform.parent;
-
-        followForm = follow.transform;
-
-        lookDir = followForm.forward;
-        curLookDir = followForm.forward;
-
         firstPersonCamPos = new CameraPosition();
-        firstPersonCamPos.Init("First Person Camera", new Vector3(0f, 1.4f, 0.8f), new GameObject().transform, followForm);
+
+        Init();
 
         if (!gameObject.TryGetComponent(out _planarReflections))
         {
@@ -111,6 +106,16 @@ public class CameraController2 : MonoBehaviour
         // collision Init
         collision.Initialize(this.GetComponent<Camera>());
         collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
+    }
+
+    private void Init()
+    {
+        followForm = follow.transform;
+
+        lookDir = followForm.forward;
+        curLookDir = followForm.forward;
+
+        firstPersonCamPos.Init("First Person Camera", new Vector3(0f, 1.4f, 0.8f), new GameObject().transform, followForm);
     }
 
     private void LateUpdate()
@@ -278,6 +283,13 @@ public class CameraController2 : MonoBehaviour
     {
         freeLookDir = Vector3.Normalize(followForm.position + new Vector3(0f, distanceUp, 0f) - parentRig.position);
         freeLookDir.y = 0.0f;
+    }
+
+    public void SetFollow(TestPlayer2 player)
+    {
+        follow = player;
+        Init();
+        ResetCameraState();
     }
 
     public void SwitchTargetView(bool target)
