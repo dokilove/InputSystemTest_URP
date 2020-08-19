@@ -14209,6 +14209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1616020492}
   - component: {fileID: 1616020491}
+  - component: {fileID: 1616020493}
   m_Layer: 0
   m_Name: InputController
   m_TagString: Untagged
@@ -14244,7 +14245,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1134206520}
+      - m_Target: {fileID: 1616020493}
         m_MethodName: OnMovement
         m_Mode: 0
         m_Arguments:
@@ -14259,7 +14260,7 @@ MonoBehaviour:
     m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1134206520}
+      - m_Target: {fileID: 1616020493}
         m_MethodName: OnLook
         m_Mode: 0
         m_Arguments:
@@ -14278,7 +14279,7 @@ MonoBehaviour:
     m_ActionName: Player/Fire[/XInputControllerWindows/rightTrigger,/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1134206520}
+      - m_Target: {fileID: 1616020493}
         m_MethodName: OnTarget
         m_Mode: 0
         m_Arguments:
@@ -14333,7 +14334,7 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1134206520}
+      - m_Target: {fileID: 1616020493}
         m_MethodName: OnFirstPersonView
         m_Mode: 0
         m_Arguments:
@@ -14348,7 +14349,7 @@ MonoBehaviour:
     m_ActionName: Player/FIrstPersonView[/XInputControllerWindows/rightTrigger]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1134206520}
+      - m_Target: {fileID: 1616020493}
         m_MethodName: OnResetCamera
         m_Mode: 0
         m_Arguments:
@@ -14363,7 +14364,7 @@ MonoBehaviour:
     m_ActionName: Player/ResetCamera[/XInputControllerWindows/rightStickPress]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1134206520}
+      - m_Target: {fileID: 1616020493}
         m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
@@ -14395,6 +14396,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1616020493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616020490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 589068bd4d0db0d4a936bfeb16897898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1134206520}
+  gameCam: {fileID: 932263055}
 --- !u!1 &1635082910
 GameObject:
   m_ObjectHideFlags: 0

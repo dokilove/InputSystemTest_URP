@@ -26,9 +26,21 @@ public class TestPlayer2 : MonoBehaviour
 
     private Vector2 direction = Vector2.zero;
     private Vector2 lookDir = Vector2.zero;
+    private float jumpVal = 0.0f;
 
-    public Vector2 Direction { get { return direction; } }
-    public Vector2 LookDir { get { return lookDir; } }
+    public Vector2 Direction {
+        get { return direction; }
+        set { direction = value; }
+    }
+    public Vector2 LookDir {
+        get { return lookDir; }
+        set { lookDir = value; }
+    }
+    public float JumpVal {
+        get { return jumpVal; }
+        set { jumpVal = value; }
+    }
+
     public float Speed { get { return speed; } }
 
     private void Awake()
@@ -89,80 +101,12 @@ public class TestPlayer2 : MonoBehaviour
         Debug.DrawRay(camera.position + Vector3.up, moveDirectionOut, Color.blue);
     }
 
-
-
-    public void OnMovement(InputAction.CallbackContext context)
+    public void Jump()
     {
-        direction = context.ReadValue<Vector2>();
-        //if (Mathf.Abs(direction.y) < 0.2f)
-        //    direction.y = 0.0f;
+        Vector3 jumpVel = Vector3.up * jumpVelocity;
+        jumpVel.x = rigidBody.velocity.x;
+        jumpVel.z = rigidBody.velocity.z;
+        rigidBody.velocity = jumpVel;
     }
 
-    public void OnLook(InputAction.CallbackContext context)
-    {
-        lookDir = context.ReadValue<Vector2>();
-
-        if (gameCam.CamState != CameraController2.CamStates.Free
-            && gameCam.CamState != CameraController2.CamStates.FirstPerson)
-        {
-            gameCam.SwitchFreeView();
-        }
-    }
-
-    public void OnTarget(InputAction.CallbackContext context)
-    {
-        bool target = context.ReadValue<float>() > 0.01f;
-
-        gameCam.SwitchTargetView(target);
-    }
-
-
-    private bool isFpsViewClicked = false;
-    public void OnFirstPersonView(InputAction.CallbackContext context)
-    {
- 
-        bool fpView = context.ReadValue<float>() >= 0.0f;
-
-        if (fpView)
-        {
-            if (!isFpsViewClicked)
-            {
-                isFpsViewClicked = true;
-                gameCam.SwitchFirstPersonView();
-            }
-        }
-
-        if (context.ReadValue<float>() == 0.0f)
-            isFpsViewClicked = false;
-    }
-
-    public void OnResetCamera(InputAction.CallbackContext context)
-    {
-        bool resetCam = context.ReadValue<float>() >= 0.0f;
-
-        if (resetCam)
-        {
-            gameCam.ResetCameraState();
-        }
-    }
-
-    private bool isJumpClicked = false;
-    private float jumpVal;
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        jumpVal = context.ReadValue<float>();
-        bool jump =  jumpVal >= 0.0f;
-
-        if (jump && !isJumpClicked)
-        {
-            Vector3 jumpVel = Vector3.up * jumpVelocity;
-            jumpVel.x = rigidBody.velocity.x;
-            jumpVel.z = rigidBody.velocity.z;
-            rigidBody.velocity = jumpVel;
-            isJumpClicked = true;
-        }
-        
-        if (context.ReadValue<float>() == 0.0f)
-            isJumpClicked = false;
-    }
 }
