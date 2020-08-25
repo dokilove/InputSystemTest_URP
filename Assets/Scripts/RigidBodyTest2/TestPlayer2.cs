@@ -5,8 +5,10 @@ using UnityEngine.InputSystem;
 
 public class TestPlayer2 : MonoBehaviour
 {
-    [SerializeField]
     private CameraController2 gameCam;
+
+    [SerializeField]
+    private MeshRenderer[] renderer;
 
     [SerializeField]
     private float moveVelocity = 10.0f;
@@ -50,6 +52,9 @@ public class TestPlayer2 : MonoBehaviour
 
     private void Update()
     {
+        if (null == gameCam)
+            return;
+
         StickToWorldSpace(this.transform, gameCam.transform, ref moveDirection, ref speed);
 
         if (gameCam.CamState != CameraController2.CamStates.FirstPerson)
@@ -76,6 +81,19 @@ public class TestPlayer2 : MonoBehaviour
         else if (rigidBody.velocity.y > 0.0f && jumpVal <= 0.0f)
         {
             rigidBody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1.0f) * Time.deltaTime;
+        }
+    }
+
+    public void SetCam(CameraController2 cam)
+    {
+        gameCam = cam;
+    }
+
+    public void SetMat(Material mat)
+    {
+        for (int i = 0; i < renderer.Length; ++i)
+        {
+            renderer[i].material = mat;
         }
     }
 

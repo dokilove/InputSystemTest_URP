@@ -91,9 +91,13 @@ public class CameraController2 : MonoBehaviour
 
     PlanarReflections _planarReflections;
 
-    private void Start()
+    private void Awake()
     {
         parentRig = this.transform.parent;
+    }
+
+    private void Start()
+    {
         firstPersonCamPos = new CameraPosition();
 
         Init();

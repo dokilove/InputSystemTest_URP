@@ -5,18 +5,23 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private TestPlayer2[] players;
-    [SerializeField]
+    private List<TestPlayer2> players;
     private CameraController2 gameCam;
 
     [SerializeField]
     private int playerIndex = 0;
 
+    public void SetPlayers(List<TestPlayer2> p, CameraController2 c)
+    {
+        players = p;
+        gameCam = c;
+        setCameraFollow();
+    }
+
     private void SetNextPlayer()
     {
         playerIndex++;
-        if (playerIndex >= players.Length)
+        if (playerIndex >= players.Count)
             playerIndex = 0;
 
         setCameraFollow();
@@ -26,7 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         playerIndex--;
         if (playerIndex < 0)
-            playerIndex = players.Length - 1;
+            playerIndex = players.Count - 1;
 
         setCameraFollow();
     }
