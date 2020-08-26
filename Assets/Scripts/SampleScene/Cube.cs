@@ -26,6 +26,9 @@ public class Cube : MonoBehaviour
 
         controls.GamePlay.RotateY.performed += ctx => rotateY = ctx.ReadValue<float>();
         controls.GamePlay.RotateY.canceled += ctx => rotateY = 0.0f;
+
+        controls.Map.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
+        controls.Map.Move.canceled += ctx => move = Vector2.zero;
     }
 
     private void Update()

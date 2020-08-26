@@ -65,6 +65,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangeMap"",
+                    ""type"": ""Button"",
+                    ""id"": ""37b4e236-0f8f-414e-b4a3-f8eae22f516b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -133,6 +141,63 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Target"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc1320a1-4d0b-403d-8b49-caacbbd85998"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeMap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Map"",
+            ""id"": ""505fcb18-8169-4ad2-8e2f-28c8ca80e432"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""f374c0ca-b180-4cb2-b89b-e267c221436d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangeMap"",
+                    ""type"": ""Button"",
+                    ""id"": ""20f585d8-590b-4214-9b4b-264ef63c5b69"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a44b323b-e6b2-4d1c-8246-2a48f46ccaf0"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1af5e0f3-49f8-418b-8dbe-925494478b80"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeMap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -147,6 +212,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_GamePlay_RotateY = m_GamePlay.FindAction("RotateY", throwIfNotFound: true);
         m_GamePlay_ResetCam = m_GamePlay.FindAction("ResetCam", throwIfNotFound: true);
         m_GamePlay_Target = m_GamePlay.FindAction("Target", throwIfNotFound: true);
+        m_GamePlay_ChangeMap = m_GamePlay.FindAction("ChangeMap", throwIfNotFound: true);
+        // Map
+        m_Map = asset.FindActionMap("Map", throwIfNotFound: true);
+        m_Map_Move = m_Map.FindAction("Move", throwIfNotFound: true);
+        m_Map_ChangeMap = m_Map.FindAction("ChangeMap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -202,6 +272,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_GamePlay_RotateY;
     private readonly InputAction m_GamePlay_ResetCam;
     private readonly InputAction m_GamePlay_Target;
+    private readonly InputAction m_GamePlay_ChangeMap;
     public struct GamePlayActions
     {
         private @PlayerControls m_Wrapper;
@@ -212,6 +283,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @RotateY => m_Wrapper.m_GamePlay_RotateY;
         public InputAction @ResetCam => m_Wrapper.m_GamePlay_ResetCam;
         public InputAction @Target => m_Wrapper.m_GamePlay_Target;
+        public InputAction @ChangeMap => m_Wrapper.m_GamePlay_ChangeMap;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -239,6 +311,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Target.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTarget;
                 @Target.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTarget;
                 @Target.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTarget;
+                @ChangeMap.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnChangeMap;
+                @ChangeMap.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnChangeMap;
+                @ChangeMap.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnChangeMap;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
@@ -261,10 +336,54 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Target.started += instance.OnTarget;
                 @Target.performed += instance.OnTarget;
                 @Target.canceled += instance.OnTarget;
+                @ChangeMap.started += instance.OnChangeMap;
+                @ChangeMap.performed += instance.OnChangeMap;
+                @ChangeMap.canceled += instance.OnChangeMap;
             }
         }
     }
     public GamePlayActions @GamePlay => new GamePlayActions(this);
+
+    // Map
+    private readonly InputActionMap m_Map;
+    private IMapActions m_MapActionsCallbackInterface;
+    private readonly InputAction m_Map_Move;
+    private readonly InputAction m_Map_ChangeMap;
+    public struct MapActions
+    {
+        private @PlayerControls m_Wrapper;
+        public MapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Map_Move;
+        public InputAction @ChangeMap => m_Wrapper.m_Map_ChangeMap;
+        public InputActionMap Get() { return m_Wrapper.m_Map; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MapActions set) { return set.Get(); }
+        public void SetCallbacks(IMapActions instance)
+        {
+            if (m_Wrapper.m_MapActionsCallbackInterface != null)
+            {
+                @Move.started -= m_Wrapper.m_MapActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnMove;
+                @ChangeMap.started -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeMap;
+                @ChangeMap.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeMap;
+                @ChangeMap.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeMap;
+            }
+            m_Wrapper.m_MapActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @ChangeMap.started += instance.OnChangeMap;
+                @ChangeMap.performed += instance.OnChangeMap;
+                @ChangeMap.canceled += instance.OnChangeMap;
+            }
+        }
+    }
+    public MapActions @Map => new MapActions(this);
     public interface IGamePlayActions
     {
         void OnGrow(InputAction.CallbackContext context);
@@ -273,5 +392,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnRotateY(InputAction.CallbackContext context);
         void OnResetCam(InputAction.CallbackContext context);
         void OnTarget(InputAction.CallbackContext context);
+        void OnChangeMap(InputAction.CallbackContext context);
+    }
+    public interface IMapActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnChangeMap(InputAction.CallbackContext context);
     }
 }

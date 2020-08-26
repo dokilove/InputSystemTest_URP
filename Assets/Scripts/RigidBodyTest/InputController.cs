@@ -58,4 +58,9 @@ public class InputController : MonoBehaviour, PlayerControls.IGamePlayActions
     {
         target = context.ReadValue<float>() > 0.01f;
     }
+
+    public void OnChangeMap(InputAction.CallbackContext context)
+    {
+
+    }
 }

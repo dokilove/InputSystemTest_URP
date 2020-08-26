@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ChangeMap",
+                    "type": "Button",
+                    "id": "37b4e236-0f8f-414e-b4a3-f8eae22f516b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -118,6 +126,63 @@
                     "processors": "",
                     "groups": "",
                     "action": "Target",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bc1320a1-4d0b-403d-8b49-caacbbd85998",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeMap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Map",
+            "id": "505fcb18-8169-4ad2-8e2f-28c8ca80e432",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "f374c0ca-b180-4cb2-b89b-e267c221436d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ChangeMap",
+                    "type": "Button",
+                    "id": "20f585d8-590b-4214-9b4b-264ef63c5b69",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a44b323b-e6b2-4d1c-8246-2a48f46ccaf0",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1af5e0f3-49f8-418b-8dbe-925494478b80",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeMap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

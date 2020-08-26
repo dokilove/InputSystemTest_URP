@@ -3,54 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class UnitController : PlayerController
 {
-    private List<TestPlayer2> players;
-    private CameraController2 gameCam;
-
-    [SerializeField]
-    private int playerIndex = 0;
-
-    public void SetPlayers(List<TestPlayer2> p, CameraController2 c)
-    {
-        players = p;
-        gameCam = c;
-        setCameraFollow();
-    }
-
-    private void SetNextPlayer()
-    {
-        playerIndex++;
-        if (playerIndex >= players.Count)
-            playerIndex = 0;
-
-        setCameraFollow();
-    }
-
-    private void SetBackPlayer()
-    {
-        playerIndex--;
-        if (playerIndex < 0)
-            playerIndex = players.Count - 1;
-
-        setCameraFollow();
-    }
-
-    private void setCameraFollow()
-    {
-        gameCam.SetFollow(players[playerIndex]);
-    }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        players[playerIndex].Direction = context.ReadValue<Vector2>();
+        player.Direction = context.ReadValue<Vector2>();
         //if (Mathf.Abs(direction.y) < 0.2f)
         //    direction.y = 0.0f;
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        players[playerIndex].LookDir = context.ReadValue<Vector2>();
+        player.LookDir = context.ReadValue<Vector2>();
 
         if (gameCam.CamState != CameraController2.CamStates.Free
             && gameCam.CamState != CameraController2.CamStates.FirstPerson)
@@ -99,14 +64,15 @@ public class PlayerController : MonoBehaviour
     private bool isJumpClicked = false;
     public void OnJump(InputAction.CallbackContext context)
     {
-        players[playerIndex].JumpVal = context.ReadValue<float>();
-        bool jump = players[playerIndex].JumpVal > 0.0f;
+        player.JumpVal = context.ReadValue<float>();
+        bool jump = player.JumpVal > 0.0f;
 
         if (jump && !isJumpClicked)
         {
-            players[playerIndex].Jump();
+            player.Jump();
             isJumpClicked = true;
         }
+        Debug.Log(context);
 
         if (context.ReadValue<float>() == 0.0f)
             isJumpClicked = false;
@@ -117,7 +83,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.ReadValue<float>() > 0.0f && !isNextPlayerClicked)
         {
-            SetNextPlayer();
+            gameManager.SetNextPlayer();
             isNextPlayerClicked = true;
         }
 
@@ -130,11 +96,25 @@ public class PlayerController : MonoBehaviour
     {
         if (context.ReadValue<float>() > 0.0f && !isBackPlayerClicked)
         {
-            SetBackPlayer();
+            gameManager.SetBackPlayer();
             isBackPlayerClicked = true;
         }
 
         if (context.ReadValue<float>() == 0.0f)
             isBackPlayerClicked = false;
+    }
+
+    private bool isCancelClicked = false;
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<float>() > 0.0f && !isCancelClicked)
+        {
+            Debug.Log("On Cancel");
+            gameManager.SwapActionMap("Map");
+            isCancelClicked = true;
+        }
+
+        if (context.ReadValue<float>() == 0.0f)
+            isCancelClicked = false;
     }
 }
