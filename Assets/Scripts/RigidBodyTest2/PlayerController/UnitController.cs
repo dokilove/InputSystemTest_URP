@@ -64,18 +64,18 @@ public class UnitController : PlayerController
     private bool isJumpClicked = false;
     public void OnJump(InputAction.CallbackContext context)
     {
-        player.JumpVal = context.ReadValue<float>();
-        bool jump = player.JumpVal > 0.0f;
+        //player.JumpVal = context.ReadValue<float>();
+        //bool jump = player.JumpVal > 0.0f;
 
-        if (jump && !isJumpClicked)
-        {
-            player.Jump();
-            isJumpClicked = true;
-        }
-        Debug.Log(context);
+        //if (jump && !isJumpClicked)
+        //{
+        //    player.Jump();
+        //    isJumpClicked = true;
+        //}
+        //Debug.Log(context);
 
-        if (context.ReadValue<float>() == 0.0f)
-            isJumpClicked = false;
+        //if (context.ReadValue<float>() == 0.0f)
+        //    isJumpClicked = false;
     }
 
     private bool isNextPlayerClicked = false;
@@ -96,7 +96,7 @@ public class UnitController : PlayerController
     {
         if (context.ReadValue<float>() > 0.0f && !isBackPlayerClicked)
         {
-            gameManager.SetBackPlayer();
+            gameManager.SetPrevPlayer();
             isBackPlayerClicked = true;
         }
 

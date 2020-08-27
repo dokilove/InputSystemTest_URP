@@ -7608,10 +7608,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dbdd4aa96969e8468d265391e1367af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorController: {fileID: 1616020493}
-  unitController: {fileID: 1616020494}
   gameCam: {fileID: 932263055}
-  playerInput: {fileID: 1616020491}
+  playerController: {fileID: 1616020493}
   playableUnits:
   - {fileID: 11400000, guid: 7304b779d435f8a45b12c55a291bbf33, type: 2}
   - {fileID: 11400000, guid: b20e44ca095604f42932ead9e68107ec, type: 2}
@@ -14426,7 +14424,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1616020492}
   - component: {fileID: 1616020491}
-  - component: {fileID: 1616020494}
   - component: {fileID: 1616020493}
   m_Layer: 0
   m_Name: InputController
@@ -14449,7 +14446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: c68313a6ed642b04db45c5c1f005f540,
     type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -14463,7 +14460,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnMovement
         m_Mode: 0
         m_Arguments:
@@ -14478,7 +14475,7 @@ MonoBehaviour:
     m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnLook
         m_Mode: 0
         m_Arguments:
@@ -14497,7 +14494,7 @@ MonoBehaviour:
     m_ActionName: Player/Fire[/XInputControllerWindows/rightTrigger,/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnTarget
         m_Mode: 0
         m_Arguments:
@@ -14552,7 +14549,7 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnFirstPersonView
         m_Mode: 0
         m_Arguments:
@@ -14567,7 +14564,7 @@ MonoBehaviour:
     m_ActionName: Player/FIrstPersonView[/XInputControllerWindows/rightTrigger]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnResetCamera
         m_Mode: 0
         m_Arguments:
@@ -14582,7 +14579,7 @@ MonoBehaviour:
     m_ActionName: Player/ResetCamera[/XInputControllerWindows/rightStickPress]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
@@ -14597,7 +14594,7 @@ MonoBehaviour:
     m_ActionName: Player/Jump[/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnNextPlayer
         m_Mode: 0
         m_Arguments:
@@ -14612,7 +14609,7 @@ MonoBehaviour:
     m_ActionName: Player/NextPlayer[/XInputControllerWindows/rightShoulder]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnBackPlayer
         m_Mode: 0
         m_Arguments:
@@ -14627,7 +14624,7 @@ MonoBehaviour:
     m_ActionName: Player/BackPlayer[/XInputControllerWindows/leftShoulder]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020493}
+      - m_Target: {fileID: 0}
         m_MethodName: OnMovement
         m_Mode: 0
         m_Arguments:
@@ -14642,7 +14639,7 @@ MonoBehaviour:
     m_ActionName: Map/Move[/XInputControllerWindows/leftStick]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020493}
+      - m_Target: {fileID: 0}
         m_MethodName: OnLook
         m_Mode: 0
         m_Arguments:
@@ -14657,7 +14654,7 @@ MonoBehaviour:
     m_ActionName: Map/Look[/XInputControllerWindows/rightStick]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020493}
+      - m_Target: {fileID: 0}
         m_MethodName: OnNextPlayer
         m_Mode: 0
         m_Arguments:
@@ -14672,7 +14669,7 @@ MonoBehaviour:
     m_ActionName: Map/NextUnit[/XInputControllerWindows/rightShoulder]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020493}
+      - m_Target: {fileID: 0}
         m_MethodName: OnBackPlayer
         m_Mode: 0
         m_Arguments:
@@ -14687,7 +14684,7 @@ MonoBehaviour:
     m_ActionName: Map/BackUnit[/XInputControllerWindows/leftShoulder]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020493}
+      - m_Target: {fileID: 0}
         m_MethodName: OnSelect
         m_Mode: 0
         m_Arguments:
@@ -14702,7 +14699,7 @@ MonoBehaviour:
     m_ActionName: Map/Select[/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020493}
+      - m_Target: {fileID: 0}
         m_MethodName: OnCancel
         m_Mode: 0
         m_Arguments:
@@ -14717,7 +14714,7 @@ MonoBehaviour:
     m_ActionName: Map/Cancel[/XInputControllerWindows/buttonEast]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1616020494}
+      - m_Target: {fileID: 0}
         m_MethodName: OnCancel
         m_Mode: 0
         m_Arguments:
@@ -14732,7 +14729,7 @@ MonoBehaviour:
     m_ActionName: Player/Cancel[/XInputControllerWindows/buttonEast]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: Map
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!4 &1616020492
@@ -14758,21 +14755,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1616020490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e13a8691338f75458b7725b93c79e13, type: 3}
+  m_Script: {fileID: 11500000, guid: 589068bd4d0db0d4a936bfeb16897898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1616020494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616020490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69e5e6e23ec8ab749a6a6840e766f8f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  playerInput: {fileID: 1616020491}
 --- !u!1 &1635082910
 GameObject:
   m_ObjectHideFlags: 0
@@ -20590,6 +20576,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372023103455871293, guid: 24000994a5bbb674e864203bbcfbdd3e,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372023103455871293, guid: 24000994a5bbb674e864203bbcfbdd3e,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 8372023103455871295, guid: 24000994a5bbb674e864203bbcfbdd3e,
         type: 3}

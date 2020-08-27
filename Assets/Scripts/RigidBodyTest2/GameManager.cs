@@ -6,16 +6,10 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    CursorController cursorController;
-    [SerializeField]
-    UnitController unitController;
-    [SerializeField]
     private CameraController2 gameCam;
-
+    
     [SerializeField]
-    PlayerInput playerInput;    
-
-    PlayerController currentController;
+    PlayerController playerController;
 
     public PlayableUnitData[] playableUnits;
     public GameObject playerUnit;
@@ -27,13 +21,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        unitController.SetGameManager(this);
-        cursorController.SetGameManager(this);
+        playerController.SetGameManager(this);
 
-        unitController.SetCam(gameCam);
-        cursorController.SetCam(gameCam);
+        playerController.SetCam(gameCam);
 
-        cursorController.SetCursor(cursor);
+        playerController.SetCursor(cursor);
         cursor.SetCam(gameCam);
 
         // 플레이어 스폰
@@ -48,45 +40,28 @@ public class GameManager : MonoBehaviour
         }
 
 
-        currentController = unitController;
         SetCurrentPlayer(players[playerIndex]);
 
         //currentController = cursorController;
         //currentController.SetCamFollow(cursor);
 
-        //SwapActionMap("Map");
+        SwapActionMap("Map");
 
         //playerInput.SwitchCurrentActionMap("Map");
     }
 
     public void SwapActionMap(string mapName)
     {
-        Debug.Log("Current Action Map: " + playerInput.currentActionMap.ToString());
-        playerInput.currentActionMap.Disable();
-        Debug.Log("Current Action Map: " + playerInput.currentActionMap.ToString());
-
-        //playerInput.SwitchCurrentActionMap(mapName);
-        //Debug.Log("Current Action Map: " + playerInput.currentActionMap.ToString());
-
-        ////playerInput.currentActionMap = playerInput.actions.FindActionMap(mapName);
-        //playerInput.currentActionMap.Enable();
-
-        StartCoroutine(SwapActionMapCoroutine(mapName));
+        if (string.Compare(mapName, "Map") == 0)
+        {
+            playerController.SetCamFollow(cursor);
+        }
+        else if (string.Compare(mapName, "Player") == 0)
+        {
+            playerController.SetCamFollow(players[playerIndex]);
+        }
     }
-
-
-    IEnumerator SwapActionMapCoroutine(string mapName)
-    {
-        Debug.Log("Current Action Map: " + playerInput.currentActionMap.ToString());
-
-        yield return new WaitForEndOfFrame();
-
-        playerInput.SwitchCurrentActionMap(mapName);
-        playerInput.currentActionMap.Enable();
-        Debug.Log("Current Action Map: " + playerInput.currentActionMap.ToString());
-
-    }
-
+    
     public void SetNextPlayer()
     {
         playerIndex++;
@@ -96,7 +71,7 @@ public class GameManager : MonoBehaviour
         SetCurrentPlayer(players[playerIndex]);
     }
 
-    public void SetBackPlayer()
+    public void SetPrevPlayer()
     {
         playerIndex--;
         if (playerIndex < 0)
@@ -107,8 +82,7 @@ public class GameManager : MonoBehaviour
 
     private void SetCurrentPlayer(TestPlayer2 player)
     {
-        currentController.SetPlayer(player);
-        currentController.SetCamFollow(player);
+        playerController.SetPlayer(player);
         cursor.transform.position = player.transform.position;
     }
 

@@ -41,7 +41,7 @@ public class CursorController : PlayerController
     {
         if (context.ReadValue<float>() > 0.0f && !isBackPlayerClicked)
         {
-            gameManager.SetBackPlayer();
+            gameManager.SetPrevPlayer();
             isBackPlayerClicked = true;
         }
         

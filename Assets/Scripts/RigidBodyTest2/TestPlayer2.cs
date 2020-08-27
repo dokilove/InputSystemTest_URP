@@ -28,7 +28,7 @@ public class TestPlayer2 : MonoBehaviour
 
     private Vector2 direction = Vector2.zero;
     private Vector2 lookDir = Vector2.zero;
-    private float jumpVal = 0.0f;
+    private bool jumpVal = false;
 
     public Vector2 Direction {
         get { return direction; }
@@ -38,7 +38,7 @@ public class TestPlayer2 : MonoBehaviour
         get { return lookDir; }
         set { lookDir = value; }
     }
-    public float JumpVal {
+    public bool JumpVal {
         get { return jumpVal; }
         set { jumpVal = value; }
     }
@@ -78,7 +78,7 @@ public class TestPlayer2 : MonoBehaviour
         {
             rigidBody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1.0f) * Time.deltaTime;
         }
-        else if (rigidBody.velocity.y > 0.0f && jumpVal <= 0.0f)
+        else if (rigidBody.velocity.y > 0.0f && !jumpVal)
         {
             rigidBody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1.0f) * Time.deltaTime;
         }
