@@ -924,6 +924,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "CursorJump",
+                    "type": "Button",
+                    "id": "8eb17459-b2a7-4dcc-85d0-1d98be79c6e3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ResetCamera",
+                    "type": "Button",
+                    "id": "d6702159-3c00-4b6a-ab3e-7402c6123e06",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -973,12 +989,23 @@
                 },
                 {
                     "name": "",
-                    "id": "b6ff0cfc-d7cb-420c-baef-5d7442802698",
+                    "id": "6370144a-0018-4671-8415-2f4f69edc399",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SelectUnit",
+                    "action": "CursorJump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8fcf6c17-cfca-4efb-9e8d-6c4d733a466b",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ResetCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

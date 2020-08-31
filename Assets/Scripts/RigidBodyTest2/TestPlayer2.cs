@@ -45,6 +45,12 @@ public class TestPlayer2 : MonoBehaviour
 
     public float Speed { get { return speed; } }
 
+    private int index;
+    public int Index {
+        get { return index; }
+        set { index = value; }
+    }
+
     private void Awake()
     {
         rigidBody = this.GetComponent<Rigidbody>();

@@ -15,4 +15,4 @@ MonoBehaviour:
   playerId: 1
   actionPoint: 80
   mat: {fileID: 2100000, guid: 81a918a7b23ab2947bd53c7f4763c659, type: 2}
-  startPos: {x: 36.49791, y: 0.56, z: 65.50964}
+  startPos: {x: 0, y: 0.56, z: -3}

@@ -34,32 +34,22 @@ public class GameManager : MonoBehaviour
         {
             GameObject go = Instantiate(playerUnit, playableUnits[i].startPos, Quaternion.identity) as GameObject;
             TestPlayer2 player = go.GetComponent<TestPlayer2>();
+            go.name = playableUnits[i].playerId.ToString();
+            player.Index = i;
             player.SetCam(gameCam);
             player.SetMat(playableUnits[i].mat);
             players.Add(player);            
         }
 
 
-        SetCurrentPlayer(players[playerIndex]);
+        //SetCurrentPlayer(players[playerIndex]);
 
         //currentController = cursorController;
         //currentController.SetCamFollow(cursor);
 
-        SwapActionMap("Map");
+        playerController.SwapActionMap("Map");
 
         //playerInput.SwitchCurrentActionMap("Map");
-    }
-
-    public void SwapActionMap(string mapName)
-    {
-        if (string.Compare(mapName, "Map") == 0)
-        {
-            playerController.SetCamFollow(cursor);
-        }
-        else if (string.Compare(mapName, "Player") == 0)
-        {
-            playerController.SetCamFollow(players[playerIndex]);
-        }
     }
     
     public void SetNextPlayer()
@@ -77,6 +67,12 @@ public class GameManager : MonoBehaviour
         if (playerIndex < 0)
             playerIndex = players.Count - 1;
 
+        SetCurrentPlayer(players[playerIndex]);
+    }
+
+    public void SelectCurrentPlayerWithID(int index)
+    {
+        playerIndex = index;
         SetCurrentPlayer(players[playerIndex]);
     }
 

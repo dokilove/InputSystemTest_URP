@@ -66,7 +66,6 @@ public class CameraController2 : MonoBehaviour
     private Vector3 curLookDir;
     private float xAxisRot = 0.0f;
     private CameraPosition firstPersonCamPos;
-    private Vector3 savedRigToGoal;
     public Vector2 rightStickPrevFrame = Vector2.zero;
     private float distanceAwayFree;
     private float distanceUpFree;
@@ -86,7 +85,7 @@ public class CameraController2 : MonoBehaviour
         Behind,
         FirstPerson,
         Target,
-        Free
+        Free,
     }
 
     PlanarReflections _planarReflections;
@@ -210,6 +209,7 @@ public class CameraController2 : MonoBehaviour
                 destination = characterOffset - Vector3.Normalize(freeLookDir) * camDistance;
                 adjustedDestination = characterOffset - Vector3.Normalize(freeLookDir) * adjustedDistance;
                 break;
+
         }
 
         if (collision.colliding && camState != CamStates.FirstPerson)
@@ -323,16 +323,20 @@ public class CameraController2 : MonoBehaviour
         }
     }
 
-    public void SwitchFreeView()
+    public void SetFreeView()
     {
         camState = CamStates.Free;
-        savedRigToGoal = Vector3.zero;
         SetFreeLookDir();
 
         Vector3 angels = (this.transform.localRotation).eulerAngles;
               
         camRotY = angels.y;
         camRotX = angels.x;
+    }
+
+    public void SetBehindView()
+    {
+        camState = CamStates.Behind;
     }
 
     public void ResetCameraState()
@@ -364,5 +368,9 @@ public class CameraController2 : MonoBehaviour
         transform.LookAt(lookAt);
 
         camState = CamStates.Behind;
+
+
+
+
     }
 }
