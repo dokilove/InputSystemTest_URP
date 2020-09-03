@@ -8,7 +8,7 @@ public class TestPlayer2 : MonoBehaviour
     private CameraController2 gameCam;
 
     [SerializeField]
-    private MeshRenderer[] renderer;
+    private MeshRenderer[] meshRenderer = null;
 
     [SerializeField]
     private float moveVelocity = 10.0f;
@@ -97,9 +97,9 @@ public class TestPlayer2 : MonoBehaviour
 
     public void SetMat(Material mat)
     {
-        for (int i = 0; i < renderer.Length; ++i)
+        for (int i = 0; i < meshRenderer.Length; ++i)
         {
-            renderer[i].material = mat;
+            meshRenderer[i].material = mat;
         }
     }
 

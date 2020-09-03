@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     protected GameManager gameManager;
 
     [SerializeField]
-    PlayerInput playerInput;
+    PlayerInput playerInput = null;
 
     public void SetGameManager(GameManager mgr)
     {

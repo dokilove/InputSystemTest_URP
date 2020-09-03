@@ -5,20 +5,20 @@ using UnityEngine;
 public class Cursor : MonoBehaviour
 {
     [SerializeField]
-    GameManager gameManager;
+    GameManager battleGameManager = null;
 
     [SerializeField]
-    private Material idleMat;
+    private Material idleMat = null;
     [SerializeField]
-    private Material selectableMat;
+    private Material selectableMat = null;
     [SerializeField]
-    private Material selectedMat;
+    private Material selectedMat = null;
 
     [SerializeField]
-    private MeshRenderer[] renderer;
+    private MeshRenderer[] meshRenderer = null;
 
     [SerializeField]
-    private CursorSelectCollider selectCollider;
+    private CursorSelectCollider selectCollider = null;
 
     public CursorState cursorState = CursorState.Idle;
 
@@ -39,14 +39,14 @@ public class Cursor : MonoBehaviour
     public void SetCurrentPlayerIndex(int index)
     {
         currentPlayerIndex = index;
-        gameManager.SelectCurrentPlayerWithID(currentPlayerIndex);
+        battleGameManager.SelectCurrentPlayerWithID(currentPlayerIndex);
     }
 
     public void SetMat(Material mat)
     {
-        for (int i = 0; i < renderer.Length; ++i)
+        for (int i = 0; i < meshRenderer.Length; ++i)
         {
-            renderer[i].material = mat;
+            meshRenderer[i].material = mat;
         }
     }
     

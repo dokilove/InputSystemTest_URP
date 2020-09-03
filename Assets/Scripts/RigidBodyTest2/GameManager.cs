@@ -6,10 +6,10 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private CameraController2 gameCam;
+    private CameraController2 gameCam = null;
     
     [SerializeField]
-    PlayerController playerController;
+    PlayerController playerController = null;
 
     public PlayableUnitData[] playableUnits;
     public GameObject playerUnit;

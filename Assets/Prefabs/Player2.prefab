@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1ec33bb9d0c114e82f4a37a3194ef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer:
+  meshRenderer:
   - {fileID: 7677614167054793350}
   - {fileID: 7677614167684790576}
   moveVelocity: 10

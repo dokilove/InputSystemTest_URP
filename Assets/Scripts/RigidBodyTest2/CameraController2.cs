@@ -23,15 +23,11 @@ struct CameraPosition
 public class CameraController2 : MonoBehaviour
 {
     [SerializeField]
-    private Transform parentRig;
+    private Transform parentRig = null;
     [SerializeField]
-    private float distanceAway;
+    private float distanceAway = 0.0f;
     [SerializeField]
-    private float distanceUp;
-    [SerializeField]
-    private float distanceAwayMultiplier = 1.5f;
-    [SerializeField]
-    private float distanceUpMultiplier = 5f;
+    private float distanceUp = 0.0f;
     [SerializeField]
     private TestPlayer2 follow;
     [SerializeField]
@@ -341,31 +337,31 @@ public class CameraController2 : MonoBehaviour
 
     public void ResetCameraState()
     {
-        Vector3 characterOffset = followForm.position + new Vector3(0f, distanceUp, 0f);
-        Vector3 lookAt = characterOffset;
-        Vector3 destination = Vector3.zero;
-        Vector3 adjustedDestination = Vector3.zero;
+        //Vector3 characterOffset = followForm.position + new Vector3(0f, distanceUp, 0f);
+        //Vector3 lookAt = characterOffset;
+        //Vector3 destination = Vector3.zero;
+        //Vector3 adjustedDestination = Vector3.zero;
 
-        float camDistance = distanceAway;
+        //float camDistance = distanceAway;
 
         ResetCameraRot();
 
         lookDir = followForm.forward;
         curLookDir = followForm.forward;
 
-        destination = characterOffset + followForm.up * distanceUp - lookDir * camDistance;
-        adjustedDestination = characterOffset + followForm.up * distanceUp - lookDir * adjustedDistance;
+        //destination = characterOffset + followForm.up * distanceUp - lookDir * camDistance;
+        //adjustedDestination = characterOffset + followForm.up * distanceUp - lookDir * adjustedDistance;
         
-        if (collision.colliding)
-        {
-            SmoothPosition(parentRig.position, adjustedDestination);
-        }
-        else
-        {
-            SmoothPosition(parentRig.position, destination);
-        }
+        //if (collision.colliding)
+        //{
+        //    SmoothPosition(parentRig.position, adjustedDestination);
+        //}
+        //else
+        //{
+        //    SmoothPosition(parentRig.position, destination);
+        //}
 
-        transform.LookAt(lookAt);
+        //transform.LookAt(lookAt);
 
         camState = CamStates.Behind;
 

@@ -40,7 +40,7 @@ public class Cube : MonoBehaviour
         transform.Rotate(r, Space.World);
 
         float rY = rotateY * Time.deltaTime * 100.0f;
-        transform.RotateAroundLocal(Vector3.up, rY);
+        transform.Rotate(Vector3.up, rY);
     }
 
 

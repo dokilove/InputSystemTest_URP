@@ -5,7 +5,7 @@ using UnityEngine;
 public class CursorSelectCollider : MonoBehaviour
 {
     [SerializeField]
-    private Cursor cursor;
+    private Cursor cursor = null;
        
     private void OnTriggerEnter(Collider other)
     {

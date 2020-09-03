@@ -8434,11 +8434,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf98c251e75c2c34a8bc7905c84bf43f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentRig: {fileID: 0}
   distanceAway: 6
   distanceUp: 1.25
-  distanceAwayMultiplier: 2
-  distanceUpMultiplier: 2
   follow: {fileID: 0}
   camSmoothDampTime: 0
   firstPersonLookSpeed: 1.5
@@ -20563,6 +20560,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
+      propertyPath: meshRenderer.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 869074205}
@@ -20590,6 +20591,18 @@ PrefabInstance:
       propertyPath: selectCollider
       value: 
       objectReference: {fileID: 1371346021}
+    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
+      propertyPath: battleGameManager
+      value: 
+      objectReference: {fileID: 869074205}
+    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
+      propertyPath: meshRenderer.Array.data[0]
+      value: 
+      objectReference: {fileID: 1112025603}
+    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
+      propertyPath: meshRenderer.Array.data[1]
+      value: 
+      objectReference: {fileID: 213633862}
     - target: {fileID: 1371346021, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
       propertyPath: cursor
       value: 

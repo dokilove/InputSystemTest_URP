@@ -12,7 +12,7 @@ public class ChargedJumpPlayer : MonoBehaviour
     private Animator anim;
 
     [SerializeField]
-    InputController inputController;
+    InputController inputController = null;
 
     // Start is called before the first frame update
     void Start()
