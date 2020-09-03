@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    protected TestPlayer2 cursorPlayer;
     protected TestPlayer2 player;
+    protected Cursor cursor;
     protected CameraController2 gameCam;
     protected GameManager gameManager;
 
@@ -23,17 +23,17 @@ public class PlayerController : MonoBehaviour
         gameCam = c;
     }
 
-    public void SetCursor(TestPlayer2 cs)
+    public void SetCursor(Cursor cs)
     {
-        cursorPlayer = cs;
+        cursor = cs;
     }
 
     public void SetPlayer(TestPlayer2 p)
     {
         player = p;
     }
-
-    public void SetCamFollow(TestPlayer2 follow)
+    
+    public void SetCamFollow(ControlableUnit follow)
     {
         if (null != gameCam)
             gameCam.SetFollow(follow);
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         if (string.Compare(mapName, "Map") == 0)
         {
-            SetCamFollow(cursorPlayer);
+            SetCamFollow(cursor);
         }
         else if (string.Compare(mapName, "Player") == 0)
         {
@@ -106,7 +106,6 @@ public class PlayerController : MonoBehaviour
     private void OnBackToMenu(InputValue value)
     {
         SwapActionMap("Map");
-        Cursor cursor = cursorPlayer.GetComponent<Cursor>();
         if (null != cursor)
         {
             cursor.SwitchState(Cursor.CursorState.Idle);
@@ -117,18 +116,18 @@ public class PlayerController : MonoBehaviour
     #region Map
     private void OnCursorMove(InputValue value)
     {
-        cursorPlayer.Direction = value.Get<Vector2>();
+        cursor.Direction = value.Get<Vector2>();
     }
 
     private void OnCursorLook(InputValue value)
     {
-        cursorPlayer.LookDir = value.Get<Vector2>();
+        cursor.LookDir = value.Get<Vector2>();
 
-        if (gameCam.CamState != CameraController2.CamStates.Free
-            && gameCam.CamState != CameraController2.CamStates.FirstPerson)
-        {
-            gameCam.SetFreeView();
-        }
+        //if (gameCam.CamState != CameraController2.CamStates.Free
+        //    && gameCam.CamState != CameraController2.CamStates.FirstPerson)
+        //{
+        //    gameCam.SetFreeView();
+        //}
 
     }
 
@@ -150,16 +149,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnCursorJump(InputValue value)
     {
-        Cursor cursor = cursorPlayer.GetComponent<Cursor>();
         if (null != cursor)
         {
             if (cursor.cursorState == Cursor.CursorState.Idle)
             {
-                cursorPlayer.JumpVal = value.isPressed;
+                cursor.JumpVal = value.isPressed;
 
-                if (cursorPlayer.JumpVal)
+                if (cursor.JumpVal)
                 {
-                    cursorPlayer.Jump();
+                    cursor.Jump();
                 }
             }
             else if (cursor.cursorState == Cursor.CursorState.Selectable)

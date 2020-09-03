@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerUnit;
 
     public List<TestPlayer2> players;
-    public TestPlayer2 cursor;
+    public Cursor cursor;
     private int playerIndex = 0;
 
     // Start is called before the first frame update

@@ -2540,12 +2540,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211366957}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &213633862 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 213633862, guid: 24000994a5bbb674e864203bbcfbdd3e,
-    type: 3}
-  m_PrefabInstance: {fileID: 8372023102975988330}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &217659448
 GameObject:
   m_ObjectHideFlags: 0
@@ -4840,18 +4834,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 453452096}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &484873049 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6916576133178334720, guid: 24000994a5bbb674e864203bbcfbdd3e,
-    type: 3}
-  m_PrefabInstance: {fileID: 8372023102975988330}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1ec33bb9d0c114e82f4a37a3194ef4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &493198155
 GameObject:
   m_ObjectHideFlags: 0
@@ -7623,7 +7605,7 @@ MonoBehaviour:
   playerUnit: {fileID: 7677614167768666919, guid: ec0730cf14768e146bc7fd1073a3e446,
     type: 3}
   players: []
-  cursor: {fileID: 484873049}
+  cursor: {fileID: 1030514079}
 --- !u!4 &869074206
 Transform:
   m_ObjectHideFlags: 0
@@ -8415,7 +8397,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932263051}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -8434,8 +8416,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf98c251e75c2c34a8bc7905c84bf43f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentRig: {fileID: 0}
   distanceAway: 6
   distanceUp: 1.25
+  cursorDistanceAway: 12
   follow: {fileID: 0}
   camSmoothDampTime: 0
   firstPersonLookSpeed: 1.5
@@ -10259,12 +10243,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1083566664}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1112025603 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8372023103026495562, guid: 24000994a5bbb674e864203bbcfbdd3e,
-    type: 3}
-  m_PrefabInstance: {fileID: 8372023102975988330}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1121414201
 GameObject:
   m_ObjectHideFlags: 0
@@ -12032,18 +12010,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360342342}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1371346021 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1371346021, guid: 24000994a5bbb674e864203bbcfbdd3e,
-    type: 3}
-  m_PrefabInstance: {fileID: 8372023102975988330}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c3dc6b6788bc01478b556f7f19f6358, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1372054902
 GameObject:
   m_ObjectHideFlags: 0
@@ -20556,61 +20522,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: renderer.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: meshRenderer.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 869074205}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: idleMat
-      value: 
-      objectReference: {fileID: 2100000, guid: d0529f8d752bef045a8f102b45a49960, type: 2}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: selectableMat
-      value: 
-      objectReference: {fileID: 2100000, guid: 41168852c5359644db6c89b4555546ec, type: 2}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: selectedMat
-      value: 
-      objectReference: {fileID: 2100000, guid: b88cf19d96fa04546b51ec66eaa17c5d, type: 2}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: renderer.Array.data[0]
-      value: 
-      objectReference: {fileID: 213633862}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: renderer.Array.data[1]
-      value: 
-      objectReference: {fileID: 1112025603}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: selectCollider
-      value: 
-      objectReference: {fileID: 1371346021}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
       propertyPath: battleGameManager
       value: 
       objectReference: {fileID: 869074205}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: meshRenderer.Array.data[0]
-      value: 
-      objectReference: {fileID: 1112025603}
-    - target: {fileID: 1030514079, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: meshRenderer.Array.data[1]
-      value: 
-      objectReference: {fileID: 213633862}
-    - target: {fileID: 1371346021, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: cursor
-      value: 
-      objectReference: {fileID: 1030514079}
-    - target: {fileID: 1371346022, guid: 24000994a5bbb674e864203bbcfbdd3e, type: 3}
-      propertyPath: m_Radius
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8372023103455871282, guid: 24000994a5bbb674e864203bbcfbdd3e,
         type: 3}
       propertyPath: m_LocalPosition.x

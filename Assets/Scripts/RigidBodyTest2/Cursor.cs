@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cursor : MonoBehaviour
+public class Cursor : ControlableUnit
 {
     [SerializeField]
     GameManager battleGameManager = null;

@@ -25,11 +25,13 @@ public class CameraController2 : MonoBehaviour
     [SerializeField]
     private Transform parentRig = null;
     [SerializeField]
-    private float distanceAway = 0.0f;
+    private float distanceAway = 6.0f;
     [SerializeField]
-    private float distanceUp = 0.0f;
+    private float distanceUp = 1.25f;
     [SerializeField]
-    private TestPlayer2 follow;
+    private float cursorDistanceAway = 12.0f;
+    [SerializeField]
+    private ControlableUnit follow;
     [SerializeField]
     private float camSmoothDampTime = 0.1f;
     [SerializeField]
@@ -73,15 +75,17 @@ public class CameraController2 : MonoBehaviour
     private float adjustedDistance = 0.0f;
 
     [SerializeField]
-    private CamStates camState = CamStates.Behind;
+    private CamStates camState = CamStates.Init;
     public CamStates CamState { get { return camState; } }
 
     public enum CamStates
     {
+        Init,
         Behind,
         FirstPerson,
         Target,
         Free,
+        Cursor,
     }
 
     PlanarReflections _planarReflections;
@@ -114,7 +118,10 @@ public class CameraController2 : MonoBehaviour
         lookDir = followForm.forward;
         curLookDir = followForm.forward;
 
-        firstPersonCamPos.Init("First Person Camera", new Vector3(0f, 1.4f, 0.8f), new GameObject().transform, followForm);
+        if (followForm.Find("First Person Camera") == null && !(follow is Cursor))
+        {
+            firstPersonCamPos.Init("First Person Camera", new Vector3(0f, 1.4f, 0.8f), new GameObject().transform, followForm);
+        }
     }
 
     private void LateUpdate()
@@ -124,10 +131,20 @@ public class CameraController2 : MonoBehaviour
         Vector3 destination = Vector3.zero;
         Vector3 adjustedDestination = Vector3.zero;
 
-        float camDistance = distanceAway;
+        float camDistance = (follow is Cursor) ? cursorDistanceAway : distanceAway;
 
         switch (camState)
         {
+            case CamStates.Init:
+                ResetCameraRot();
+
+                lookDir = followForm.forward;
+                curLookDir = followForm.forward;
+
+                destination = characterOffset + followForm.up * distanceUp - Vector3.Normalize(curLookDir) * camDistance;
+                adjustedDestination = characterOffset + followForm.up * distanceUp - Vector3.Normalize(curLookDir) * adjustedDistance;
+
+                break;
             case CamStates.Behind:
                 ResetCameraRot();
 
@@ -205,6 +222,21 @@ public class CameraController2 : MonoBehaviour
                 destination = characterOffset - Vector3.Normalize(freeLookDir) * camDistance;
                 adjustedDestination = characterOffset - Vector3.Normalize(freeLookDir) * adjustedDistance;
                 break;
+            case CamStates.Cursor:
+                ResetCameraRot();
+                freeLookDir = Quaternion.Euler(30.0f, camRotY, 0.0f) * Vector3.forward;
+
+
+                // 키입력이 있을 때만 카메라 기준 포지션 수정
+                if (follow.LookDir.x != 0.0f || follow.LookDir.y != 0.0f)
+                {
+                    OrbitTargetCursor();
+                }
+
+                destination = characterOffset - Vector3.Normalize(freeLookDir) * camDistance;
+                adjustedDestination = characterOffset - Vector3.Normalize(freeLookDir) * adjustedDistance;
+
+                break;
 
         }
 
@@ -234,6 +266,18 @@ public class CameraController2 : MonoBehaviour
 
         collision.CheckColliding(characterOffset);
         adjustedDistance = collision.GetAdjustedDistanceWithRayFrom(characterOffset);
+
+        if (camState == CamStates.Init)
+        {
+            if (follow is Cursor)
+            {
+                SetCursorView();
+            }
+            else
+            {
+                SetBehindView();
+            }
+        }
     }
 
     private void OrbitTarget()
@@ -263,6 +307,33 @@ public class CameraController2 : MonoBehaviour
         freeLookDir = Quaternion.Euler(camRotX, camRotY, 0.0f) * Vector3.forward;
     }
 
+    private void OrbitTargetCursor()
+    {
+        if ((follow.LookDir.y < -1f * rightStickThreshold && follow.LookDir.y <= rightStickPrevFrame.y)
+             ||
+             (follow.LookDir.y > rightStickThreshold && follow.LookDir.y >= rightStickPrevFrame.y))
+        {
+
+            camRotX += -follow.LookDir.y * rotSpeed;
+
+            if (camRotX > CAMROTXMAXTRESHOLD)
+                camRotX = CAMROTXMAXTRESHOLD;
+
+            if (camRotX < CAMROTXMINTRESHOLD)
+                camRotX = CAMROTXMINTRESHOLD;
+
+        }
+
+        if ((follow.LookDir.x < -1f * rightStickThreshold && follow.LookDir.x <= rightStickPrevFrame.x)
+           ||
+           (follow.LookDir.x > rightStickThreshold && follow.LookDir.x >= rightStickPrevFrame.x))
+        {
+            camRotY += follow.LookDir.x * rotSpeed;
+        }
+
+        freeLookDir = Quaternion.Euler(30.0f, camRotY, 0.0f) * Vector3.forward;
+    }
+
     private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
     {
         if (camSmoothDampTime == 0.0f)
@@ -285,11 +356,11 @@ public class CameraController2 : MonoBehaviour
         freeLookDir.y = 0.0f;
     }
 
-    public void SetFollow(TestPlayer2 player)
+    public void SetFollow(ControlableUnit player)
     {
         follow = player;
         Init();
-        ResetCameraState();
+        InitCameraState();
     }
 
     public void SwitchTargetView(bool target)
@@ -297,7 +368,7 @@ public class CameraController2 : MonoBehaviour
         if (target)
             camState = CamStates.Target;
         else
-            camState = CamStates.Behind;
+            SetBehindView();
     }
 
     public void SwitchFirstPersonView()
@@ -309,7 +380,7 @@ public class CameraController2 : MonoBehaviour
                 break;
             case CamStates.FirstPerson:
                 xAxisRot = 0.0f;
-                camState = CamStates.Behind;
+                SetBehindView();
                 break;
             case CamStates.Behind:
             case CamStates.Free:
@@ -335,38 +406,33 @@ public class CameraController2 : MonoBehaviour
         camState = CamStates.Behind;
     }
 
+    public void SetCursorView()
+    {
+        camState = CamStates.Cursor;
+    }
+
+    public void InitCameraState()
+    {
+        if (follow is Cursor)
+        {
+            SetCursorView();
+        }
+        else
+        {
+            camState = CamStates.Init;
+        }
+    }
+
     public void ResetCameraState()
     {
-        //Vector3 characterOffset = followForm.position + new Vector3(0f, distanceUp, 0f);
-        //Vector3 lookAt = characterOffset;
-        //Vector3 destination = Vector3.zero;
-        //Vector3 adjustedDestination = Vector3.zero;
-
-        //float camDistance = distanceAway;
-
-        ResetCameraRot();
-
-        lookDir = followForm.forward;
-        curLookDir = followForm.forward;
-
-        //destination = characterOffset + followForm.up * distanceUp - lookDir * camDistance;
-        //adjustedDestination = characterOffset + followForm.up * distanceUp - lookDir * adjustedDistance;
-        
-        //if (collision.colliding)
-        //{
-        //    SmoothPosition(parentRig.position, adjustedDestination);
-        //}
-        //else
-        //{
-        //    SmoothPosition(parentRig.position, destination);
-        //}
-
-        //transform.LookAt(lookAt);
-
-        camState = CamStates.Behind;
-
-
-
-
+        if (follow is Cursor)
+        {
+            camRotY = 0.0f;
+            SetCursorView();
+        }
+        else
+        {
+            camState = CamStates.Init;
+        }
     }
 }

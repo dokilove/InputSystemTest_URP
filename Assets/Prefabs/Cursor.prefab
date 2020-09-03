@@ -122,7 +122,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1371346021
 MonoBehaviour:
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c3dc6b6788bc01478b556f7f19f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursor: {fileID: 1030514079}
 --- !u!1 &8372023103026495604
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +228,6 @@ GameObject:
   - component: {fileID: 8372023103455871282}
   - component: {fileID: 8372023103455871292}
   - component: {fileID: 8372023103455871293}
-  - component: {fileID: 6916576133178334720}
   - component: {fileID: 1030514079}
   m_Layer: 10
   m_Name: Cursor
@@ -281,24 +281,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!114 &6916576133178334720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8372023103455871295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1ec33bb9d0c114e82f4a37a3194ef4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  renderer: []
-  moveVelocity: 10
-  jumpVelocity: 10
-  turnSmoothTime: 0.1
-  fallMultiplier: 2.5
-  lowJumpMultiplier: 2
 --- !u!114 &1030514079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,3 +293,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d9e299ff6a76d40bb0fa2068981e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveVelocity: 10
+  jumpVelocity: 10
+  turnSmoothTime: 0.1
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
+  battleGameManager: {fileID: 0}
+  idleMat: {fileID: 2100000, guid: d0529f8d752bef045a8f102b45a49960, type: 2}
+  selectableMat: {fileID: 2100000, guid: 41168852c5359644db6c89b4555546ec, type: 2}
+  selectedMat: {fileID: 2100000, guid: b88cf19d96fa04546b51ec66eaa17c5d, type: 2}
+  meshRenderer:
+  - {fileID: 8372023103026495562}
+  - {fileID: 213633862}
+  selectCollider: {fileID: 1371346021}
+  cursorState: 0
