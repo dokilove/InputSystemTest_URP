@@ -109,6 +109,7 @@ public class PlayerController : MonoBehaviour
         if (null != cursor)
         {
             cursor.SwitchState(Cursor.CursorState.Idle);
+            cursor.SetChasePlayer();
         }
     }
     #endregion
@@ -162,8 +163,9 @@ public class PlayerController : MonoBehaviour
             }
             else if (cursor.cursorState == Cursor.CursorState.Selectable)
             {
-                cursor.SelectPlayer();
                 SwapActionMap("Player");
+                cursor.SelectPlayer();
+                cursor.SetChasePlayer(player.transform);
             }
         }
     }

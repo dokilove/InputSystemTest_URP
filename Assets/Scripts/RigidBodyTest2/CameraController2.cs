@@ -55,6 +55,12 @@ public class CameraController2 : MonoBehaviour
     private float CAMROTXMINTRESHOLD = -30.0f;
     [SerializeField]
     private float rotSpeed = 1.2f;
+    [SerializeField]
+    private float cursorCamDistanceSpeed = 1.0f;
+    [SerializeField]
+    private float cursorCamDistanceMax = 20.0f;
+    [SerializeField]
+    private float cursorCamDistanceMin = 6.0f;
 
     private Transform followForm;
 
@@ -314,13 +320,13 @@ public class CameraController2 : MonoBehaviour
              (follow.LookDir.y > rightStickThreshold && follow.LookDir.y >= rightStickPrevFrame.y))
         {
 
-            camRotX += -follow.LookDir.y * rotSpeed;
+            cursorDistanceAway += -follow.LookDir.y * cursorCamDistanceSpeed;
 
-            if (camRotX > CAMROTXMAXTRESHOLD)
-                camRotX = CAMROTXMAXTRESHOLD;
+            if (cursorDistanceAway > cursorCamDistanceMax)
+                cursorDistanceAway = cursorCamDistanceMax;
 
-            if (camRotX < CAMROTXMINTRESHOLD)
-                camRotX = CAMROTXMINTRESHOLD;
+            if (cursorDistanceAway < cursorCamDistanceMin)
+                cursorDistanceAway = cursorCamDistanceMin;
 
         }
 

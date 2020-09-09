@@ -53,6 +53,16 @@ public class ControlableUnit : MonoBehaviour
 
     private void Update()
     {
+        Move();
+    }
+
+    protected virtual void Move()
+    {
+        InputMove();
+    }
+
+    public void InputMove()
+    {
         if (null == gameCam)
             return;
 

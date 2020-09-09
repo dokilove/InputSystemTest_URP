@@ -23,12 +23,35 @@ public class Cursor : ControlableUnit
     public CursorState cursorState = CursorState.Idle;
 
     private int currentPlayerIndex = -1;
+    private bool isChasePlayer = false;
+    private Transform chaseTransform = null;
 
     public enum CursorState
     {
         Idle,
         Selectable,
         Selected,
+    }
+
+    protected override void Move()
+    {
+        if (isChasePlayer)
+        {
+            ChaseMove();
+        }
+        else
+        {
+            InputMove();
+        }
+    }
+
+    private void ChaseMove()
+    {
+        if (null != chaseTransform)
+        {
+            this.transform.position = chaseTransform.position;
+            this.transform.rotation = chaseTransform.rotation;
+        }
     }
 
     public void SelectPlayer()
@@ -40,6 +63,19 @@ public class Cursor : ControlableUnit
     {
         currentPlayerIndex = index;
         battleGameManager.SelectCurrentPlayerWithID(currentPlayerIndex);
+    }
+
+    public void SetChasePlayer(Transform playerTransform = null)
+    {
+        if (null != playerTransform)
+        {
+            isChasePlayer = true;
+        }
+        else
+        {
+            isChasePlayer = false;
+        }
+        chaseTransform = playerTransform;
     }
 
     public void SetMat(Material mat)
