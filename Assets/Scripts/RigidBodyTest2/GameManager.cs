@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.IO;
+using ProtoBuf;
+
+public enum FileLoadMode
+{
+    Tsv,
+    ProtoBuf,
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -11,7 +19,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     PlayerController playerController = null;
 
-    public PlayableUnitData[] playableUnits;
+    [SerializeField]
+    FileLoadMode mode = FileLoadMode.Tsv;
+
+    //public PlayableUnitData[] playableUnits;
     public GameObject playerUnit;
 
     public List<TestPlayer2> players;
@@ -21,6 +32,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!ProtoBuf.Meta.RuntimeTypeModel.Default.IsDefined(typeof(Vector3)))
+        {
+            ProtoBuf.Meta.RuntimeTypeModel.Default.Add(typeof(Vector3), false).Add("x", "y", "z");
+        }
+
         playerController.SetGameManager(this);
 
         playerController.SetCam(gameCam);
@@ -29,25 +45,71 @@ public class GameManager : MonoBehaviour
         cursor.SetCam(gameCam);
 
         // 플레이어 스폰
-        players = new List<TestPlayer2>();
-        for(int i =0; i < playableUnits.Length; ++i)
+
+        if (mode == FileLoadMode.Tsv)
         {
-            GameObject go = Instantiate(playerUnit, playableUnits[i].startPos, Quaternion.identity) as GameObject;
-            TestPlayer2 player = go.GetComponent<TestPlayer2>();
-            go.name = playableUnits[i].playerId.ToString();
-            player.Index = i;
-            player.SetCam(gameCam);
-            player.SetMat(playableUnits[i].mat);
-            players.Add(player);            
+            List<PlayerData> list = new List<PlayerData>();
+            using (new CustomTimer("Parse tsv", 1))
+            {
+                string tsvPath = Path.Combine(Application.dataPath, "Data", "Tsv", "PlayerData.tsv");
+                list = TsvParser.ParsePlayerData(tsvPath);
+
+            }
+            players = new List<TestPlayer2>();
+            for (int i = 0; i < list.Count; ++i)
+            {
+                GameObject go = Instantiate(playerUnit, list[i].startPos, Quaternion.identity) as GameObject;
+                TestPlayer2 player = go.GetComponent<TestPlayer2>();
+                go.name = list[i].playerId.ToString();
+                player.Index = i;
+                player.SetCam(gameCam);
+                player.SetMat(list[i].mat);
+                players.Add(player);
+            }
+        }
+        else if (mode == FileLoadMode.ProtoBuf)
+        {
+            List<PlayerDataProtoBuf> list = new List<PlayerDataProtoBuf>();
+            using (new CustomTimer("Deserialize ProtoBuf", 1))
+            {
+                string filePath = Path.Combine(Application.dataPath, "Data", "ProtoBuf", "PlayerData.proto");
+                list = Serializer.Deserialize<List<PlayerDataProtoBuf>>(new FileStream(filePath, FileMode.Open, FileAccess.Read));
+
+            }
+            players = new List<TestPlayer2>();
+            for (int i = 0; i < list.Count; ++i)
+            {
+                GameObject go = Instantiate(playerUnit, list[i].startPos, Quaternion.identity) as GameObject;
+                TestPlayer2 player = go.GetComponent<TestPlayer2>();
+                go.name = list[i].playerId.ToString();
+                player.Index = i;
+                player.SetCam(gameCam);
+                string matPath = Path.Combine("Materials", list[i].mat);
+                Material mat = Resources.Load(matPath, typeof(Material)) as Material;
+                player.SetMat(mat);
+                players.Add(player);
+            }
         }
 
 
-        //SetCurrentPlayer(players[playerIndex]);
+            //for(int i =0; i < playableUnits.Length; ++i)
+            //{
+            //    GameObject go = Instantiate(playerUnit, playableUnits[i].startPos, Quaternion.identity) as GameObject;
+            //    TestPlayer2 player = go.GetComponent<TestPlayer2>();
+            //    go.name = playableUnits[i].playerId.ToString();
+            //    player.Index = i;
+            //    player.SetCam(gameCam);
+            //    player.SetMat(playableUnits[i].mat);
+            //    players.Add(player);            
+            //}
 
-        //currentController = cursorController;
-        //currentController.SetCamFollow(cursor);
 
-        playerController.SwapActionMap("Map");
+            //SetCurrentPlayer(players[playerIndex]);
+
+            //currentController = cursorController;
+            //currentController.SetCamFollow(cursor);
+
+            playerController.SwapActionMap("Map");
 
         //playerInput.SwitchCurrentActionMap("Map");
     }

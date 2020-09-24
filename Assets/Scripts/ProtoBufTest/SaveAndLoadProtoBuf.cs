@@ -69,7 +69,29 @@ public class SaveAndLoadProtoBuf : MonoBehaviour
         if (GUI.Button(new Rect(10, 230, 200, 100), "Tsv Parse"))
         {
            string tsvPath = Path.Combine(Application.dataPath, "Data", "Tsv", "PlayerData.tsv");
-            TsvParser.Parsing(tsvPath);
+           TsvParser.Parsing(tsvPath);
+        }
+
+
+        if (GUI.Button(new Rect(10, 340, 200, 100), "Tsv to ProtoBuf"))
+        {
+
+            string tsvPath = Path.Combine(Application.dataPath, "Data", "Tsv", "PlayerData.tsv");
+            List<PlayerDataProtoBuf> list = TsvParser.Tsv2ProtoBufPlayerData(tsvPath);
+
+            if (list == null)
+            {
+                Debug.LogError("Value is null");
+                return;
+            }
+
+            string filePath = Path.Combine(Application.dataPath, "Data", "ProtoBuf", "PlayerData.proto");
+
+            using (FileStream Stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                Serializer.Serialize<List<PlayerDataProtoBuf>>(Stream, list);
+                Stream.Flush();
+            }
         }
     }
 }

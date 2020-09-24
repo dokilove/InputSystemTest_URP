@@ -7598,10 +7598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameCam: {fileID: 932263055}
   playerController: {fileID: 1616020493}
-  playableUnits:
-  - {fileID: 11400000, guid: 7304b779d435f8a45b12c55a291bbf33, type: 2}
-  - {fileID: 11400000, guid: b20e44ca095604f42932ead9e68107ec, type: 2}
-  - {fileID: 11400000, guid: ebfed44eae771e347bd45c1fc5eaec61, type: 2}
+  mode: 0
   playerUnit: {fileID: 7677614167768666919, guid: ec0730cf14768e146bc7fd1073a3e446,
     type: 3}
   players: []
@@ -8431,6 +8428,9 @@ MonoBehaviour:
   CAMROTXMAXTRESHOLD: 89
   CAMROTXMINTRESHOLD: -30
   rotSpeed: 5
+  cursorCamDistanceSpeed: 1
+  cursorCamDistanceMax: 20
+  cursorCamDistanceMin: 6
   rightStickPrevFrame: {x: 0, y: 0}
   collision:
     collisionLayer:
@@ -16459,7 +16459,7 @@ Transform:
   m_GameObject: {fileID: 1811794233}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 80, y: 80, z: 80}
+  m_LocalScale: {x: 500, y: 500, z: 500}
   m_Children: []
   m_Father: {fileID: 633412205}
   m_RootOrder: 0
