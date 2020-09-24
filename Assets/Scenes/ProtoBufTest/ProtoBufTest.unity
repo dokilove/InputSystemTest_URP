@@ -310,25 +310,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482ef0640f3d7246b3bd32cc4c76ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  File1Path: F:\Samesame.proto
+  FileName: samesame.proto
   MyGroup:
-    GroupName: SameSame
-    GroupMember:
-    - name: aifj
-      age: 1
-      position: {x: 111, y: 111, z: 111}
-    - name: bjsaidjsi
-      age: 2
-      position: {x: 222, y: 222, z: 222}
-    - name: cdaijrhjwid
-      age: 34
-      position: {x: 333, y: 333, z: 0}
-    - name: dwqjro
-      age: 56
-      position: {x: 444, y: 444, z: 444}
-    - name: erkog
-      age: 78
-      position: {x: 555, y: 555, z: 555}
+    GroupName: 
+    GroupMember: []
 --- !u!114 &1669348498
 MonoBehaviour:
   m_ObjectHideFlags: 0

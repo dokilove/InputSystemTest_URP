@@ -5,10 +5,11 @@ using ProtoBuf;
 using System.IO;
 
 
-public class SaveAndLoad : MonoBehaviour
+public class SaveAndLoadProtoBuf : MonoBehaviour
 {
-    public string File1Path;
+    public string FileName;
     public Persons MyGroup;
+    string File1Path;
 
     private void Start()
     {
@@ -16,6 +17,9 @@ public class SaveAndLoad : MonoBehaviour
         {
             ProtoBuf.Meta.RuntimeTypeModel.Default.Add(typeof(Vector3), false).Add("x", "y", "z");
         }
+
+        File1Path = Path.Combine(Application.dataPath, "Data", FileName);
+        Debug.Log(File1Path);
     }
 
     private void OnGUI()
@@ -34,8 +38,10 @@ public class SaveAndLoad : MonoBehaviour
                 return;
             }
 
-
-            MyGroup = Serializer.Deserialize<Persons>(new FileStream(File1Path, FileMode.Open, FileAccess.Read));
+            using (new CustomTimer("Deserialize Protobuf", 1))
+            {
+                MyGroup = Serializer.Deserialize<Persons>(new FileStream(File1Path, FileMode.Open, FileAccess.Read));
+            }
         }
 
 
@@ -58,6 +64,12 @@ public class SaveAndLoad : MonoBehaviour
                 Serializer.Serialize<Persons>(Stream, MyGroup);
                 Stream.Flush();
             }
+        }
+
+        if (GUI.Button(new Rect(10, 230, 200, 100), "Tsv Parse"))
+        {
+           string tsvPath = Path.Combine(Application.dataPath, "Data", "Tsv", "PlayerData.tsv");
+            TsvParser.Parsing(tsvPath);
         }
     }
 }
