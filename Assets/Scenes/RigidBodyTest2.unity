@@ -7598,7 +7598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameCam: {fileID: 932263055}
   playerController: {fileID: 1616020493}
-  mode: 0
+  mode: 2
   playerUnit: {fileID: 7677614167768666919, guid: ec0730cf14768e146bc7fd1073a3e446,
     type: 3}
   players: []

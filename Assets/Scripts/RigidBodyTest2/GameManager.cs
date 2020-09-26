@@ -9,6 +9,7 @@ public enum FileLoadMode
 {
     Tsv,
     ProtoBuf,
+    ScriptableObject,
 }
 
 public class GameManager : MonoBehaviour
@@ -85,6 +86,29 @@ public class GameManager : MonoBehaviour
                 player.Index = i;
                 player.SetCam(gameCam);
                 string matPath = Path.Combine("Materials", list[i].mat);
+                Material mat = Resources.Load(matPath, typeof(Material)) as Material;
+                player.SetMat(mat);
+                players.Add(player);
+            }
+        }
+        else if(mode == FileLoadMode.ScriptableObject)
+        {
+            PlayerDataCsv data = null;
+            using (new CustomTimer("Scriptable Object", 1)){
+                string resourcePath = Path.Combine("Data", "ScriptableObject", "PlayerData");
+                data = Resources.Load(resourcePath, typeof(PlayerDataCsv)) as PlayerDataCsv;
+            }
+
+            players = new List<TestPlayer2>();
+            for (int i = 0; i < data.items.Length; ++i)
+            {
+                Vector3 startPos = new Vector3(data.items[i].StartPos[0], data.items[i].StartPos[1], data.items[i].StartPos[2]);
+                GameObject go = Instantiate(playerUnit, startPos, Quaternion.identity) as GameObject;
+                TestPlayer2 player = go.GetComponent<TestPlayer2>();
+                go.name = data.items[i].Id.ToString();
+                player.Index = i;
+                player.SetCam(gameCam);
+                string matPath = Path.Combine("Materials", data.items[i].MatName);
                 Material mat = Resources.Load(matPath, typeof(Material)) as Material;
                 player.SetMat(mat);
                 players.Add(player);
