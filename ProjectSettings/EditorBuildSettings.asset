@@ -4,5 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
-  m_configObjects: {}
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/RigidBodyTest2.unity
+    guid: 144092a104db15b439b925ebcad16b02
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 8e1bee8a178e0864a8b8fedd49ee4ba3,
+      type: 2}

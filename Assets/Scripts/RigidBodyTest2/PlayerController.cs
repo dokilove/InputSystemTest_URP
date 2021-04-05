@@ -13,6 +13,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     PlayerInput playerInput = null;
 
+    public void ActivateInput(bool activate)
+    {
+        if (activate)
+            playerInput.ActivateInput();
+        else
+            playerInput.DeactivateInput();
+    }
+
     public void SetGameManager(GameManager mgr)
     {
         gameManager = mgr;

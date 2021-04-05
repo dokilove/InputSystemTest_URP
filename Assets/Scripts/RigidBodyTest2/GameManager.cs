@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     public List<TestPlayer2> players;
     public Cursor cursor;
+    
     private int playerIndex = 0;
 
     // Start is called before the first frame update
@@ -164,8 +165,10 @@ public class GameManager : MonoBehaviour
 
     private void SetCurrentPlayer(TestPlayer2 player)
     {
+        playerController.ActivateInput(false);
         playerController.SetPlayer(player);
         cursor.transform.position = player.transform.position;
+        playerController.ActivateInput(true);
     }
 
 }
